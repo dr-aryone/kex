@@ -58,8 +58,14 @@ public abstract class Agent {
 		socket.send(msg);
 	}
 
-	public void turn(double d) throws IOException {
-		byte[] buf = (("(turn " + d + ")").getBytes());
+	public void turn(double direction) throws IOException {
+		byte[] buf = (("(turn " + direction + ")").getBytes());
+		DatagramPacket msg = new DatagramPacket(buf, buf.length, ip,
+				Constants.Server.PORT);
+		socket.send(msg);
+	}
+	public void kick(int power, double direction) throws IOException {
+		byte[] buf = (("(kick " + power + " "+direction+")").getBytes());
 		DatagramPacket msg = new DatagramPacket(buf, buf.length, ip,
 				Constants.Server.PORT);
 		socket.send(msg);

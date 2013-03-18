@@ -34,6 +34,13 @@ public class Forward extends Agent {
 					turn(90);
 				} else {
 					//run to ball
+					if(world.getDistToBall() < 2) {
+						if(world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED) {
+							kick(100, world.getAngleToEnemyGoal());
+						} else {
+							turn(45);
+						}
+					} 
 					if(Math.abs(world.getAngleToBall()) > 10) {
 						turn(world.getAngleToBall());
 					} else {

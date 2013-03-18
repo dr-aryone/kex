@@ -42,10 +42,17 @@ public class Parser extends Thread {
 		else if (message.contains("see")) {
 			if(message.contains("ball")) {
 				String[] stringAfterBall = message.split("(ball)")[1].split("[ \\)]");
-				System.out.println(stringAfterBall[2]);
-				System.out.println(stringAfterBall[3]);
 				world.setDistToBall(Double.parseDouble(stringAfterBall[2]));
 				world.setAngleToBall(Double.parseDouble(stringAfterBall[3]));
+			} else {
+				world.setAngleToBall(Constants.Params.NOT_DEFINED);
+			}
+			if(message.contains("goal r")) {
+				String[] stringAfterGoal = message.split("(goal r)")[1].split("[ \\)]");
+				world.setDistToEnemyGoal(Double.parseDouble(stringAfterGoal[2]));
+				world.setAngleToEnemyGoal(Double.parseDouble(stringAfterGoal[3]));
+			} else {
+				world.setAngleToEnemyGoal(Constants.Params.NOT_DEFINED);
 			}
 		}
 	}
