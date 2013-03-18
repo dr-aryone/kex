@@ -35,6 +35,10 @@ public abstract class Agent {
 
 	}
 	
+	public boolean canSeeBall() {
+		return world.getAngleToBall() == Constants.Params.NOT_DEFINED;
+	}
+	
 	public abstract void run() throws IOException;
 	
 	private void move(int x, int y) throws IOException {

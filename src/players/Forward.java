@@ -17,7 +17,7 @@ public class Forward extends Agent {
 	}
 
 	public Forward() throws IOException {
-		super(10, 0);
+		super(-10, 0);
 	}
 
 	@Override
@@ -33,23 +33,30 @@ public class Forward extends Agent {
 				if(world.getAngleToBall() == Constants.Params.NOT_DEFINED) {
 					turn(90);
 				} else {
-					//run to ball
-					if(world.getDistToBall() < 2) {
-						if(world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED) {
-							kick(100, world.getAngleToEnemyGoal());
-						} else {
-							turn(45);
-						}
-					} 
-					if(Math.abs(world.getAngleToBall()) > 10) {
-						turn(world.getAngleToBall());
-					} else {
-						dash(100);
-					}
+					tryToKick();
+					runToBall();
 				}
 			default:
 			}
 		}
 	}
 
+	private void runToBall() throws IOException {
+		if(Math.abs(world.getAngleToBall()) > 10) {
+			turn(world.getAngleToBall());
+		} else {
+			dash(100);
+		}
+		
+	}
+
+	private void tryToKick() throws IOException {
+		if(world.getDistToBall() < 1.9) {
+			if(world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED) {
+				kick(100, world.getAngleToEnemyGoal());
+			} else {
+				turn(45);
+			}
+		}
+	}
 }

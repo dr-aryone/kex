@@ -7,7 +7,7 @@ public final class Constants {
 	}
 	
 	public static final class Team {
-		public static final String NAME = "meinkemakers";
+		public static final String NAME = "meinkemakers2";
 	}
 	
 	public static final class Params {
