@@ -16,8 +16,10 @@ public abstract class Agent {
 	protected WorldState world;
 	private Parser parser;
 	InetAddress ip;
+	private boolean goalie;
 
 	public Agent(int startX, int startY) throws IOException {
+		goalie = false;
 		ip = InetAddress.getByName(Constants.Server.IP);
 		try {
 			socket = new DatagramSocket();
@@ -38,6 +40,10 @@ public abstract class Agent {
 	public boolean canSeeBall() {
 		return world.getAngleToBall() == Constants.Params.NOT_DEFINED;
 	}
+
+	public boolean canSeeEnemyGoal() {
+		return world.getAngleToEnemyGoal() == Constants.Params.NOT_DEFINED;
+	}
 	
 	public abstract void run() throws IOException;
 	
@@ -47,9 +53,16 @@ public abstract class Agent {
 				Constants.Server.PORT);
 		socket.send(msg);
 	}
+	
+	protected void isGoalie() {
+		goalie = true;
+	}
 
 	private void initConnection() throws IOException {
 		byte[] buf = (("(init " + Constants.Team.NAME + ")").getBytes());
+		if(goalie) {
+			buf = (("(init " + Constants.Team.NAME + " 1)").getBytes());
+		}
 		DatagramPacket msg = new DatagramPacket(buf, buf.length, ip,
 				Constants.Server.PORT);
 		socket.send(msg);
@@ -70,6 +83,15 @@ public abstract class Agent {
 	}
 	public void kick(int power, double direction) throws IOException {
 		byte[] buf = (("(kick " + power + " "+direction+")").getBytes());
+		DatagramPacket msg = new DatagramPacket(buf, buf.length, ip,
+				Constants.Server.PORT);
+		socket.send(msg);
+	}
+	/**
+	 * Goalie only
+	 */
+	public void catchBall(double direction) throws IOException {
+		byte[] buf = (("(catch "+direction+")").getBytes());
 		DatagramPacket msg = new DatagramPacket(buf, buf.length, ip,
 				Constants.Server.PORT);
 		socket.send(msg);

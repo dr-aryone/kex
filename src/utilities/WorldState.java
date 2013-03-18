@@ -13,9 +13,6 @@ public class WorldState {
 	private double distToFriendlyGoal;
 
 
-	public boolean canSeeEnemyGoal() {
-		return angleToEnemyGoal == Constants.Params.NOT_DEFINED;
-	}
 
 
 	public double getDistToFriendlyGoal() {
