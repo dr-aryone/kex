@@ -1,48 +1,43 @@
 package players;
 
-import java.io.IOException;
+import utilities.Constants;
 
 public class Goalie extends Agent {
 
-	public static void main(String [] args) {
-		try {
-			new Goalie();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static void main(String[] args) {
+		new Goalie();
 	}
 
 	private boolean shouldMove;
 	private int angleToMoveBack;
-	
-	public Goalie() throws IOException {
-		super(-50, 0);
+
+	public Goalie() {
+		super(Constants.Team.GOALIE);
 		isGoalie();
 	}
 
 	@Override
-	public void run() throws IOException {
-		while(true) {
+	public void run() {
+		while (true) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
-			if(world.getDistToBall() < 5) {
+
+			if (world.getDistToBall() < 5) {
 				runToBall();
 			} else if (world.getDistToBall() < 1.5) {
 				catchTheBall();
 			} else {
 				alignToBall();
 			}
-			
+
 		}
 	}
 
-	private void alignToBall() throws IOException {
-		if(angleToMoveBack != 0) {
+	private void alignToBall() {
+		if (angleToMoveBack != 0) {
 			turn(angleToMoveBack);
 			angleToMoveBack = 0;
 		}
@@ -50,9 +45,9 @@ public class Goalie extends Agent {
 			dash(10);
 			shouldMove = false;
 		}
-		if(!canSeeBall()) {
+		if (!canSeeBall()) {
 			turn(90);
-		} else if(world.getAngleToBall() > 0) {
+		} else if (world.getAngleToBall() > 0) {
 			turn(90);
 			shouldMove = true;
 			angleToMoveBack = -90;
@@ -63,17 +58,17 @@ public class Goalie extends Agent {
 		}
 	}
 
-	private void catchTheBall() throws IOException {
+	private void catchTheBall() {
 		catchBall(world.getAngleToBall());
 	}
 
-	private void runToBall() throws IOException {
-		if(Math.abs(world.getAngleToBall()) > 10) {
+	private void runToBall() {
+		if (Math.abs(world.getAngleToBall()) > 10) {
 			turn(world.getAngleToBall());
 		} else {
 			dash(100);
 		}
-		
+
 	}
 
 }

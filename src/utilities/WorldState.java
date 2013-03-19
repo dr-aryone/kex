@@ -1,8 +1,9 @@
 package utilities;
 
 public class WorldState {
-	public static final int KICK_OFF = 1;
+	public static final int ENEMY_KICK_OFF = 3;
 	public static final int PLAY_ON = 2;
+	public static int FRIENDLY_KICK_OFF = 1;
 	private double angleToBall = Constants.Params.NOT_DEFINED;
 	private double distToBall = Constants.Params.NOT_DEFINED;
 	private int state = Constants.Params.NOT_DEFINED;

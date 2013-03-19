@@ -32,13 +32,9 @@ public class Parser extends Thread {
 	}
 
 	private void parse(String message) {
-		System.out.println(message);
 		if (message.contains("hear")) {
-			if (message.contains("kick_off")) {
-				world.setState(WorldState.KICK_OFF);
-			} else if (message.contains("play_on")) {
-				world.setState(WorldState.PLAY_ON);
-			}
+			processAudio(message);
+			System.out.println(message);
 		} else if (message.contains("see")) {
 			if (message.contains("ball")) {
 				setBallState(message);
@@ -61,6 +57,24 @@ public class Parser extends Thread {
 			} else {
 				world.setLeftSide(false);
 			}
+		}
+	}
+
+	private void processAudio(String message) {
+		if (message.contains("kick_off_l")) {
+			if(world.isLeftSide()) {
+				world.setState(WorldState.FRIENDLY_KICK_OFF);
+			} else {
+				world.setState(WorldState.ENEMY_KICK_OFF);
+			}
+		} else if (message.contains("kick_off_r")) {
+			if(world.isRightSide()) {
+				world.setState(WorldState.FRIENDLY_KICK_OFF);
+			} else {
+				world.setState(WorldState.ENEMY_KICK_OFF);
+			}
+		} else if (message.contains("play_on")) {
+			world.setState(WorldState.PLAY_ON);
 		}
 	}
 
