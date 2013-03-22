@@ -8,7 +8,9 @@ public class Parser extends Thread {
 
 	WorldState world;
 	DatagramSocket socket;
-	private int notSinceBallSince;
+	private int notSinceBallSince = 100;
+	private int notSeenLeftGoalSince = 100;
+	private int notSeenRightGoalSince = 100;
 
 	public Parser(WorldState world, DatagramSocket socket) {
 		this.world = world;
@@ -32,9 +34,9 @@ public class Parser extends Thread {
 	}
 
 	private void parse(String message) {
+		System.out.println(message);
 		if (message.contains("hear")) {
 			processAudio(message);
-			System.out.println(message);
 		} else if (message.contains("see")) {
 			if (message.contains("ball")) {
 				setBallState(message);
@@ -57,18 +59,21 @@ public class Parser extends Thread {
 			} else {
 				world.setLeftSide(false);
 			}
+			if (message.contains("before_kick_off")) {
+				world.setState(WorldState.BEFORE_KICK_OFF);
+			}
 		}
 	}
 
 	private void processAudio(String message) {
 		if (message.contains("kick_off_l")) {
-			if(world.isLeftSide()) {
+			if (world.isLeftSide()) {
 				world.setState(WorldState.FRIENDLY_KICK_OFF);
 			} else {
 				world.setState(WorldState.ENEMY_KICK_OFF);
 			}
 		} else if (message.contains("kick_off_r")) {
-			if(world.isRightSide()) {
+			if (world.isRightSide()) {
 				world.setState(WorldState.FRIENDLY_KICK_OFF);
 			} else {
 				world.setState(WorldState.ENEMY_KICK_OFF);
@@ -79,7 +84,7 @@ public class Parser extends Thread {
 	}
 
 	private void cantSeeBall() {
-		if(notSinceBallSince > 5)
+		if (notSinceBallSince > 5)
 			world.setAngleToBall(Constants.Params.NOT_DEFINED);
 		else
 			notSinceBallSince++;
@@ -93,19 +98,26 @@ public class Parser extends Thread {
 	}
 
 	private void cantSeeLeftGoal() {
-		if (world.isLeftSide()) {
-			world.setAngleToFriendlyGoal(Constants.Params.NOT_DEFINED);
+		if (notSeenLeftGoalSince > 5) {
+			if (world.isLeftSide()) {
+				world.setAngleToFriendlyGoal(Constants.Params.NOT_DEFINED);
+			} else {
+				world.setAngleToEnemyGoal(Constants.Params.NOT_DEFINED);
+			}
 		} else {
-			world.setAngleToEnemyGoal(Constants.Params.NOT_DEFINED);
+			notSeenLeftGoalSince++;
 		}
-
 	}
 
 	private void cantSeeRightGoal() {
-		if (world.isRightSide()) {
-			world.setAngleToFriendlyGoal(Constants.Params.NOT_DEFINED);
+		if (notSeenRightGoalSince > 5) {
+			if (world.isRightSide()) {
+				world.setAngleToFriendlyGoal(Constants.Params.NOT_DEFINED);
+			} else {
+				world.setAngleToEnemyGoal(Constants.Params.NOT_DEFINED);
+			}
 		} else {
-			world.setAngleToEnemyGoal(Constants.Params.NOT_DEFINED);
+			notSeenRightGoalSince++;
 		}
 
 	}

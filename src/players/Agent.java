@@ -44,8 +44,17 @@ public abstract class Agent {
 	}
 
 	public void moveFriendlyKickoff() {
+		if (world.isRightSide()) {
+			turn(180);
+		}
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+		}
 		switch (role) {
 		case Constants.Team.GOALIE:
+			move(-50, 0);
+			break;
 		case Constants.Team.OUTER_LEFT_DEFENDER:
 		case Constants.Team.INNER_LEFT_DEFENDER:
 		case Constants.Team.INNER_RIGHT_DEFENDER:
@@ -57,6 +66,7 @@ public abstract class Agent {
 		case Constants.Team.CENTER_FORWARD:
 			move(Constants.CenterForward.FRIENDLY_KICKOFF_X,
 					Constants.CenterForward.FRIENDLY_KICKOFF_Y);
+			break;
 		case Constants.Team.RIGHT_WING:
 		}
 	}

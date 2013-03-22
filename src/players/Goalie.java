@@ -1,15 +1,13 @@
 package players;
 
 import utilities.Constants;
+import utilities.WorldState;
 
 public class Goalie extends Agent {
 
 	public static void main(String[] args) {
 		new Goalie();
 	}
-
-	private boolean shouldMove;
-	private int angleToMoveBack;
 
 	public Goalie() {
 		super(Constants.Team.GOALIE);
@@ -24,38 +22,26 @@ public class Goalie extends Agent {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
-			if (world.getDistToBall() < 5) {
-				runToBall();
-			} else if (world.getDistToBall() < 1.5) {
-				catchTheBall();
-			} else {
-				alignToBall();
+			switch (world.getState()) {
+			case WorldState.BEFORE_KICK_OFF:
+				moveFriendlyKickoff();
+			default:
+				if (world.getDistToBall() < 1.5) {
+					catchTheBall();
+				} else if (world.getDistToBall() < 10) {
+					runToBall();
+				} else {
+					alignToBall();
+				}
 			}
 
 		}
 	}
 
 	private void alignToBall() {
-		if (angleToMoveBack != 0) {
-			turn(angleToMoveBack);
-			angleToMoveBack = 0;
-		}
-		if (shouldMove) {
-			dash(10);
-			shouldMove = false;
-		}
-		if (!canSeeBall()) {
-			turn(90);
-		} else if (world.getAngleToBall() > 0) {
-			turn(90);
-			shouldMove = true;
-			angleToMoveBack = -90;
-		} else if (world.getAngleToBall() < 0) {
-			turn(-90);
-			shouldMove = true;
-			angleToMoveBack = 90;
-		}
+		//if (!canSeeBall()) {
+		//	turn(45);
+		//}
 	}
 
 	private void catchTheBall() {

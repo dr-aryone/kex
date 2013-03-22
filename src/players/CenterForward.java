@@ -3,6 +3,7 @@ package players;
 import utilities.Constants;
 import utilities.WorldState;
 
+
 public class CenterForward extends Agent {
 
 	public static void main(String[] args) {
@@ -29,6 +30,8 @@ public class CenterForward extends Agent {
 					tryToKick();
 					runToBall();
 				}
+			case WorldState.BEFORE_KICK_OFF:
+				moveFriendlyKickoff();
 			default:
 			}
 		}
@@ -44,7 +47,7 @@ public class CenterForward extends Agent {
 	}
 
 	private void tryToKick() {
-		if (world.getDistToBall() < 1.9) {
+		if (world.getDistToBall() < 1) {
 			if (world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED) {
 				kick(100, world.getAngleToEnemyGoal());
 			} else {
