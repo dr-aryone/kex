@@ -37,15 +37,6 @@ public class CenterForward extends Agent {
 		}
 	}
 
-	private void runToBall() {
-		if (Math.abs(world.getAngleToBall()) > 10) {
-			turn(world.getAngleToBall());
-		} else {
-			dash(100);
-		}
-
-	}
-
 	private void tryToKick() {
 		if (world.getDistToBall() < 1) {
 			if (world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED) {

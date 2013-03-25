@@ -110,7 +110,7 @@ public class Parser extends Thread {
 	}
 
 	private void cantSeeRightGoal() {
-		if (notSeenRightGoalSince > 5) {
+		if (notSeenRightGoalSince > 10) {
 			if (world.isRightSide()) {
 				world.setAngleToFriendlyGoal(Constants.Params.NOT_DEFINED);
 			} else {

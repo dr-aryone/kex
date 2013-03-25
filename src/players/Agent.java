@@ -97,16 +97,33 @@ public abstract class Agent {
 		sendMessage(msg);
 	}
 
-	public void dash(int power) {
-		sendMessage("(dash " + power + ")");
+	public void dash(int power, double direction) {
+		sendMessage("(dash " + power + " " + direction + ")");
 	}
 
 	public void turn(double direction) {
+		updateAngles(direction);
 		sendMessage("(turn " + direction + ")");
+	}
+
+	private void updateAngles(double direction) {
+		
 	}
 
 	public void kick(int power, double direction) {
 		sendMessage("(kick " + power + " " + direction + ")");
+	}
+	
+	public void runToBall() {
+		if (world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED) {
+			if (Math.abs(world.getAngleToBall()) > 10 && world.getDistToBall() > 5) {
+				turn(world.getAngleToBall());
+			} else {
+				dash(100, world.getAngleToBall());
+			}
+		} else {
+			turn(45);
+		}
 	}
 
 	/**
