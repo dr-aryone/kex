@@ -94,9 +94,9 @@ public abstract class Agent {
 	}
 
 	private void initConnection() {
-		String msg = "(init " + Constants.Team.NAME + ")";
+		String msg = "(init " + Constants.Team.NAME + "(version 13))";
 		if (goalie) {
-			msg = "(init " + Constants.Team.NAME + " 1)";
+			msg = "(init " + Constants.Team.NAME + " (version 13) 1)";
 		}
 		sendMessage(msg);
 	}
