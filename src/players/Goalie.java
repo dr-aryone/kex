@@ -26,7 +26,9 @@ public class Goalie extends Agent {
 			case WorldState.BEFORE_KICK_OFF:
 				moveFriendlyKickoff();
 			default:
-				if (world.getDistToBall() < 1.5) {
+				if(world.getAngleToBall() != Constants.Params.NOT_DEFINED) {
+					returnToGoal();
+				} else if (world.getDistToBall() < 1.5) {
 					catchTheBall();
 				} else if (world.getDistToBall() < 10) {
 					runToBall();
@@ -47,9 +49,17 @@ public class Goalie extends Agent {
 	}
 
 	private void returnToGoal() {
-		
-		turn(world.getAngleToFriendlyGoal());
-		
+		if (world.getAngleToFriendlyGoal() != Constants.Params.NOT_DEFINED) {
+			if (Math.abs(world.getAngleToFriendlyGoal()) > 10 && world.getDistToFriendlyGoal() > 5) {
+				turn(world.getAngleToFriendlyGoal()); 
+			} else if(world.getDistToFriendlyGoal() > 5){
+				dash(100, world.getAngleToFriendlyGoal());
+			} else {
+				turn(45);
+			}
+		} else {
+			turn(45);
+		}		
 	}
 
 	private void catchTheBall() {
