@@ -6,6 +6,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Iterator;
+import java.util.Set;
 
 import utilities.Constants;
 import utilities.Parser;
@@ -111,7 +113,10 @@ public abstract class Agent {
 	}
 
 	private void updateAngles(double direction) {
-		
+		Set<String> keys = world.getAngleToObjects().keySet();
+		for(Iterator<String> i = keys.iterator(); i.hasNext();) {
+			
+		}
 	}
 
 	public void kick(int power, double direction) {
