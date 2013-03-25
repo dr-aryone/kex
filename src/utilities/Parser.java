@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 
 public class Parser extends Thread {
 
+	private static final int EXPIRATION_TIME = 50;
 	WorldState world;
 	DatagramSocket socket;
 
