@@ -44,7 +44,7 @@ public class Parser extends Thread {
 		} else if (command.equals("sense_body")) {
 
 		} else if (command.equals("hear")) {
-
+			parseAural(message);
 		} else if (command.equals("fullstate")) {
 
 		} else if (command.equals("error")) {
@@ -60,16 +60,25 @@ public class Parser extends Thread {
 		}
 	}
 
+	private void parseAural(String message) {
+		ParseContext<Integer> timeContext = parseTime(message);
+		message = timeContext.message;
+		int time = timeContext.parsedData;
+
+		
+		
+	}
+
 	private void parseSee(String message) {
 		ParseContext<Integer> timeContext = parseTime(message);
 		message = timeContext.message;
 		int time = timeContext.parsedData;
 		boolean hasNext = true;
-		
+
 		while (hasNext && message.length() > 2) {
 			ParseContext<String> itemContext = null;
 			try {
-			itemContext = parseItem(message);
+				itemContext = parseItem(message);
 			} catch (java.lang.StringIndexOutOfBoundsException e) {
 				break;
 			}
@@ -77,22 +86,22 @@ public class Parser extends Thread {
 			String item = itemContext.parsedData;
 
 			world.sawObjectAtTime(item, time);
-			
+
 			int rightPara = message.indexOf(')');
 			String[] params = message.substring(0, rightPara).split(" ");
 			try {
-				message = message.substring(rightPara+2);
+				message = message.substring(rightPara + 2);
 			} catch (java.lang.StringIndexOutOfBoundsException e) {
 				hasNext = false;
 			}
-			
-			if(params.length > 0) {
+
+			if (params.length > 0) {
 				world.angleToObject(item, Double.parseDouble(params[0]));
 			}
-			if(params.length > 1) {
+			if (params.length > 1) {
 				world.distanceToObject(item, Integer.parseInt(params[1]));
 			}
-			
+
 		}
 
 	}

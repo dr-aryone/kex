@@ -11,10 +11,12 @@ import java.util.Iterator;
 import java.util.Set;
 
 import utilities.Constants;
+import utilities.MyTimer;
 import utilities.Parser;
+import utilities.TimeListener;
 import utilities.WorldState;
 
-public abstract class Agent {
+public abstract class Agent implements TimeListener{
 
 	private DatagramSocket socket;
 	protected WorldState world;
@@ -23,6 +25,8 @@ public abstract class Agent {
 	private boolean goalie;
 	private int role;
 	private boolean hasMoved;
+	private String nextMessage;
+	public boolean newData;
 
 	public Agent(int role) {
 		goalie = false;
@@ -42,9 +46,21 @@ public abstract class Agent {
 		parser = new Parser(world, socket);
 		parser.start();
 		hasMoved = false;
+		
+		MyTimer t = new MyTimer();
+		t.addListener(this);
+		t.run();
+		
 		initConnection();
 		run();
 
+	}
+	
+
+	@Override
+	public void newCycle() {
+		sendMessage(nextMessage);
+		newData = true;
 	}
 
 	public void moveFriendlyKickoff() {
@@ -89,7 +105,7 @@ public abstract class Agent {
 	public abstract void run();
 
 	private void move(int x, int y) {
-		sendMessage("(move " + x + " " + y + ")");
+		nextMessage = "(move " + x + " " + y + ")";
 	}
 
 	protected void isGoalie() {
@@ -101,16 +117,16 @@ public abstract class Agent {
 		if (goalie) {
 			msg = "(init " + Constants.Team.NAME + " (version 13) 1)";
 		}
-		sendMessage(msg);
+		nextMessage = msg;
 	}
 
 	public void dash(int power, double direction) {
-		sendMessage("(dash " + power + " " + direction + ")");
+		nextMessage = "(dash " + power + " " + direction + ")";
 	}
 
 	public void turn(double direction) {
 		updateAngles(direction);
-		sendMessage("(turn " + direction + ")");
+		nextMessage = "(turn " + direction + ")";
 	}
 
 	private void updateAngles(double direction) {
@@ -126,7 +142,7 @@ public abstract class Agent {
 	}
 
 	public void kick(int power, double direction) {
-		sendMessage("(kick " + power + " " + direction + ")");
+		nextMessage = "(kick " + power + " " + direction + ")";
 	}
 	
 	public void runToBall() {
@@ -146,7 +162,7 @@ public abstract class Agent {
 	 */
 	public void catchBall(double direction) {
 		if (goalie) {
-			sendMessage("(catch " + direction + ")");
+			nextMessage = "(catch " + direction + ")";
 		}
 	}
 
