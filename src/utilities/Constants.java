@@ -3,7 +3,7 @@ package utilities;
 public final class Constants {
 	public static final class Server {
 		public static final String IP = "127.0.0.1";
-		public static final int PORT = 6000;
+		public static int PORT = 6000;
 	}
 
 	public static final class Team {

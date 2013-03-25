@@ -60,8 +60,12 @@ public class WorldState {
 		return isLeftSide;
 	}
 
-	public void setLeftSide(boolean isLeftSide) {
-		this.isLeftSide = isLeftSide;
+	public void setLeftSide() {
+		isLeftSide = true;
+	}
+
+	public void setRightSide() {
+		isLeftSide = false;
 	}
 	
 	

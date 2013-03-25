@@ -53,6 +53,12 @@ public abstract class Agent implements TimeListener{
 		t.start();
 		
 		initConnection();
+		try {
+			socket = new DatagramSocket();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		run();
 
 	}
@@ -121,7 +127,7 @@ public abstract class Agent implements TimeListener{
 		if (goalie) {
 			msg = "(init " + Constants.Team.NAME + " (version 13) 1)";
 		}
-		nextMessage = msg;
+		sendMessage(msg);
 	}
 
 	public void dash(int power, double direction) {
@@ -177,6 +183,7 @@ public abstract class Agent implements TimeListener{
 	}
 
 	private void sendMessage(String message) {
+		System.out.println(">>"+message);
 		byte[] buf = message.getBytes();
 		DatagramPacket msg = new DatagramPacket(buf, buf.length, ip,
 				Constants.Server.PORT);
