@@ -6,11 +6,13 @@ import java.net.DatagramSocket;
 
 public class Parser extends Thread {
 
+	private static final int EXPIRATION_TIME = 50;
 	WorldState world;
 	DatagramSocket socket;
 	private int notSinceBallSince = 100;
 	private int notSeenLeftGoalSince = 100;
 	private int notSeenRightGoalSince = 100;
+	
 
 	public Parser(WorldState world, DatagramSocket socket) {
 		this.world = world;
@@ -174,7 +176,7 @@ public class Parser extends Thread {
 	}
 
 	private void cantSeeLeftGoal() {
-		if (notSeenLeftGoalSince > 5) {
+		if (notSeenLeftGoalSince > EXPIRATION_TIME) {
 			if (world.isLeftSide()) {
 				world.setAngleToFriendlyGoal(Constants.Params.NOT_DEFINED);
 			} else {
@@ -186,7 +188,7 @@ public class Parser extends Thread {
 	}
 
 	private void cantSeeRightGoal() {
-		if (notSeenRightGoalSince > 10) {
+		if (notSeenRightGoalSince > EXPIRATION_TIME) {
 			if (world.isRightSide()) {
 				world.setAngleToFriendlyGoal(Constants.Params.NOT_DEFINED);
 			} else {
