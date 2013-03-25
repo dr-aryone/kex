@@ -63,7 +63,6 @@ public abstract class Agent implements TimeListener{
 		if(!nextMessage.equals("")) {
 			sendMessage(nextMessage);
 		}
-		System.out.println(nextMessage);
 		nextMessage = "";
 		newData = true;
 	}
@@ -136,13 +135,19 @@ public abstract class Agent implements TimeListener{
 
 	private void updateAngles(double direction) {
 		String key;
-		Double previousAngle;
+		Double previousAngle, newAngle;
 		HashMap<String, Double> angleToObjects = world.getAngleToObjects();
 		Set<String> keys = angleToObjects.keySet();
 		for(Iterator<String> i = keys.iterator(); i.hasNext();) {
 			key = i.next();
 			previousAngle = angleToObjects.get(key);
-			angleToObjects.put(key, previousAngle + direction);
+			newAngle = previousAngle - direction;
+			if (newAngle > 180) {
+				newAngle = -1*(360 - newAngle);
+			} else if (newAngle < -180) {
+				newAngle = 360 + newAngle;
+			}
+			angleToObjects.put(key, newAngle);
 		}
 	}
 

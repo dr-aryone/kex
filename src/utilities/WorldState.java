@@ -20,7 +20,10 @@ public class WorldState {
 	private HashMap<String, Integer> distanceToObjects = new HashMap<String, Integer>();
 	private HashMap<String, String> serverParams = new HashMap<String, String>();
 
-
+	public double getAngleToObject(String key) {
+		return angleToObjects.get(key);
+	}
+	
 	public String getServerParam(String key) {
 		return serverParams.get(key);
 	}
