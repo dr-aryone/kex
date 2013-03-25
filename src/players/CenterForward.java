@@ -31,7 +31,11 @@ public class CenterForward extends Agent {
 				default:
 				}
 			} else {
-				Thread.yield();
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
