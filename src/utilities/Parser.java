@@ -34,7 +34,8 @@ public class Parser extends Thread {
 	private void parse(String message) {
 		int firstSpace = message.indexOf(' ');
 		String command = message.substring(1, firstSpace);
-		message = message.substring(firstSpace, message.length() - 1);
+		message = message.substring(firstSpace, message.length() - 1).trim();
+		System.out.println(message);
 		if (command.equals("see")) {
 			parseSee(message);
 		} else if (command.equals("sense_body")) {
@@ -52,12 +53,22 @@ public class Parser extends Thread {
 		} else if (command.equals("player_param")) {
 
 		} else if (command.equals("init")) {
-
+			parseInit(message);
 		}
 	}
 
+	private void parseInit(String message) {
+		message = message.substring(0, message.length() - 1);
+		String[] params = message.split(" ");
+		if (params[0].equals("l")) {
+			world.setLeftSide();
+		} else {
+			world.setRightSide();
+		}
+		parseState(params[2]);
+	}
+
 	private void parseServerParams(String message) {
-		System.out.println(message);
 		String[] params = message.split("\\)\\(");
 		for (String param : params) {
 			param = param.replace(")", "");
@@ -70,33 +81,35 @@ public class Parser extends Thread {
 		ParseContext<Integer> timeContext = parseTime(message);
 		message = timeContext.message;
 		int time = timeContext.parsedData;
-		
+
 		int space = message.indexOf(' ');
 		String firstParam = message.substring(0, space);
-		
-		message = message.substring(space, message.length()-2);
-		
-		if(firstParam.equals("referee")) {
-			parseReferee(message);
+
+		message = message.substring(space, message.length() - 2);
+
+		if (firstParam.equals("referee")) {
+			parseState(message);
 		}
-		
+
 	}
 
-	private void parseReferee(String message) {
-		if (message.equals("kick_off_l")) {
+	private void parseState(String message) {
+		if (message.contains("kick_off_l")) {
 			if (world.isLeftSide()) {
 				world.setState(WorldState.FRIENDLY_KICK_OFF);
 			} else {
 				world.setState(WorldState.ENEMY_KICK_OFF);
 			}
-		} else if (message.equals("kick_off_r")) {
+		} else if (message.contains("kick_off_r")) {
 			if (world.isRightSide()) {
 				world.setState(WorldState.FRIENDLY_KICK_OFF);
 			} else {
 				world.setState(WorldState.ENEMY_KICK_OFF);
 			}
-		} else if (message.equals("play_on")) {
+		} else if (message.contains("play_on")) {
 			world.setState(WorldState.PLAY_ON);
+		} else if (message.contains("before_kick_off")) {
+			world.setState(WorldState.BEFORE_KICK_OFF);
 		}
 	}
 
@@ -117,7 +130,6 @@ public class Parser extends Thread {
 			String item = itemContext.parsedData;
 
 			world.sawObjectAtTime(item, time);
-
 			int rightPara = message.indexOf(')');
 			String[] params = message.substring(0, rightPara).split(" ");
 			try {
@@ -140,14 +152,14 @@ public class Parser extends Thread {
 	private ParseContext<String> parseItem(String message) {
 		int rightPara = message.indexOf(')');
 		String item = message.substring(2, rightPara);
-		message = message.substring(rightPara + 2, message.length() - 1);
+		message = message.substring(rightPara+1, message.length()).trim();
 		return new ParseContext<String>(message, item);
 	}
 
 	private ParseContext<Integer> parseTime(String message) {
 		int firstSpace = message.indexOf(' ', 1);
-		int time = Integer.parseInt(message.substring(1, firstSpace));
-		message = message.substring(firstSpace + 1, message.length() - 1);
+		int time = Integer.parseInt(message.substring(0, firstSpace));
+		message = message.substring(firstSpace, message.length() - 1).trim();
 		return new ParseContext<Integer>(message, time);
 	}
 
