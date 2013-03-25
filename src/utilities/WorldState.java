@@ -18,8 +18,17 @@ public class WorldState {
 	private HashMap<String, Integer> lastSeen = new HashMap<String, Integer>();
 	private HashMap<String, Double> angleToObjects = new HashMap<String, Double>();
 	private HashMap<String, Integer> distanceToObjects = new HashMap<String, Integer>();
+	private HashMap<String, String> serverParams = new HashMap<String, String>();
 
 
+	public String getServerParam(String key) {
+		return serverParams.get(key);
+	}
+	
+	public void putServerParam(String key, String obj) {
+		serverParams.put(key, obj);
+	}
+	
 	public HashMap<String, Double> getAngleToObjects() {
 		return angleToObjects;
 	}

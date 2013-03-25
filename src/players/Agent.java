@@ -30,6 +30,7 @@ public abstract class Agent implements TimeListener{
 
 	public Agent(int role) {
 		goalie = false;
+		nextMessage = "";
 		this.role = role;
 		try {
 			ip = InetAddress.getByName(Constants.Server.IP);
@@ -49,7 +50,7 @@ public abstract class Agent implements TimeListener{
 		
 		MyTimer t = new MyTimer();
 		t.addListener(this);
-		t.run();
+		t.start();
 		
 		initConnection();
 		run();
@@ -59,7 +60,11 @@ public abstract class Agent implements TimeListener{
 
 	@Override
 	public void newCycle() {
-		sendMessage(nextMessage);
+		if(!nextMessage.equals("")) {
+			sendMessage(nextMessage);
+		}
+		System.out.println(nextMessage);
+		nextMessage = "";
 		newData = true;
 	}
 
@@ -113,7 +118,7 @@ public abstract class Agent implements TimeListener{
 	}
 
 	private void initConnection() {
-		String msg = "(init " + Constants.Team.NAME + "(version 13))";
+		String msg = "(init " + Constants.Team.NAME + " (version 13))";
 		if (goalie) {
 			msg = "(init " + Constants.Team.NAME + " (version 13) 1)";
 		}

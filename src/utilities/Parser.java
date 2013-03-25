@@ -9,10 +9,6 @@ public class Parser extends Thread {
 	private static final int EXPIRATION_TIME = 50;
 	WorldState world;
 	DatagramSocket socket;
-	private int notSinceBallSince = 100;
-	private int notSeenLeftGoalSince = 100;
-	private int notSeenRightGoalSince = 100;
-	
 
 	public Parser(WorldState world, DatagramSocket socket) {
 		this.world = world;
@@ -21,7 +17,7 @@ public class Parser extends Thread {
 
 	public void run() {
 		while (true) {
-			byte[] receiveData = new byte[1024];
+			byte[] receiveData = new byte[4096];
 			DatagramPacket p = new DatagramPacket(receiveData,
 					receiveData.length);
 			try {
@@ -30,12 +26,12 @@ public class Parser extends Thread {
 				e.printStackTrace();
 			}
 			String message = new String(p.getData());
-			properParse(message);
+			parse(message);
 
 		}
 	}
 
-	private void properParse(String message) {
+	private void parse(String message) {
 		int firstSpace = message.indexOf(' ');
 		String command = message.substring(1, firstSpace);
 		message = message.substring(firstSpace, message.length() - 1);
@@ -52,7 +48,7 @@ public class Parser extends Thread {
 		} else if (command.equals("player_type")) {
 
 		} else if (command.equals("server_param")) {
-
+			parseServerParams(message);
 		} else if (command.equals("player_param")) {
 
 		} else if (command.equals("init")) {
@@ -60,13 +56,48 @@ public class Parser extends Thread {
 		}
 	}
 
+	private void parseServerParams(String message) {
+		System.out.println(message);
+		String[] params = message.split("\\)\\(");
+		for (String param : params) {
+			param = param.replace(")", "");
+			String[] s = param.split(" ");
+			world.putServerParam(s[0], s[1]);
+		}
+	}
+
 	private void parseAural(String message) {
 		ParseContext<Integer> timeContext = parseTime(message);
 		message = timeContext.message;
 		int time = timeContext.parsedData;
+		
+		int space = message.indexOf(' ');
+		String firstParam = message.substring(0, space);
+		
+		message = message.substring(space, message.length()-2);
+		
+		if(firstParam.equals("referee")) {
+			parseReferee(message);
+		}
+		
+	}
 
-		
-		
+	private void parseReferee(String message) {
+		if (message.equals("kick_off_l")) {
+			if (world.isLeftSide()) {
+				world.setState(WorldState.FRIENDLY_KICK_OFF);
+			} else {
+				world.setState(WorldState.ENEMY_KICK_OFF);
+			}
+		} else if (message.equals("kick_off_r")) {
+			if (world.isRightSide()) {
+				world.setState(WorldState.FRIENDLY_KICK_OFF);
+			} else {
+				world.setState(WorldState.ENEMY_KICK_OFF);
+			}
+		} else if (message.equals("play_on")) {
+			world.setState(WorldState.PLAY_ON);
+		}
 	}
 
 	private void parseSee(String message) {
@@ -120,118 +151,4 @@ public class Parser extends Thread {
 		return new ParseContext<Integer>(message, time);
 	}
 
-	private void parse(String message) {
-		System.out.println(message);
-		if (message.contains("hear")) {
-			processAudio(message);
-		} else if (message.contains("see")) {
-			if (message.contains("ball")) {
-				setBallState(message);
-			} else {
-				cantSeeBall();
-			}
-			if (message.contains("goal r")) {
-				setRightGoalState(message);
-			} else {
-				cantSeeRightGoal();
-			}
-			if (message.contains("goal l")) {
-				setLeftGoalState(message);
-			} else {
-				cantSeeLeftGoal();
-			}
-		} else if (message.contains("init")) {
-			if (message.contains(" l ")) {
-				world.setLeftSide(true);
-			} else {
-				world.setLeftSide(false);
-			}
-			if (message.contains("before_kick_off")) {
-				world.setState(WorldState.BEFORE_KICK_OFF);
-			}
-		}
-	}
-
-	private void processAudio(String message) {
-		if (message.contains("kick_off_l")) {
-			if (world.isLeftSide()) {
-				world.setState(WorldState.FRIENDLY_KICK_OFF);
-			} else {
-				world.setState(WorldState.ENEMY_KICK_OFF);
-			}
-		} else if (message.contains("kick_off_r")) {
-			if (world.isRightSide()) {
-				world.setState(WorldState.FRIENDLY_KICK_OFF);
-			} else {
-				world.setState(WorldState.ENEMY_KICK_OFF);
-			}
-		} else if (message.contains("play_on")) {
-			world.setState(WorldState.PLAY_ON);
-		}
-	}
-
-	private void cantSeeBall() {
-		if (notSinceBallSince > 5)
-			world.setAngleToBall(Constants.Params.NOT_DEFINED);
-		else
-			notSinceBallSince++;
-
-	}
-
-	private void setBallState(String message) {
-		String[] params = message.split("(ball)")[1].split("[ \\)]");
-		world.setDistToBall(Double.parseDouble(params[2]));
-		world.setAngleToBall(Double.parseDouble(params[3]));
-	}
-
-	private void cantSeeLeftGoal() {
-		if (notSeenLeftGoalSince > EXPIRATION_TIME) {
-			if (world.isLeftSide()) {
-				world.setAngleToFriendlyGoal(Constants.Params.NOT_DEFINED);
-			} else {
-				world.setAngleToEnemyGoal(Constants.Params.NOT_DEFINED);
-			}
-		} else {
-			notSeenLeftGoalSince++;
-		}
-	}
-
-	private void cantSeeRightGoal() {
-		if (notSeenRightGoalSince > EXPIRATION_TIME) {
-			if (world.isRightSide()) {
-				world.setAngleToFriendlyGoal(Constants.Params.NOT_DEFINED);
-			} else {
-				world.setAngleToEnemyGoal(Constants.Params.NOT_DEFINED);
-			}
-		} else {
-			notSeenRightGoalSince++;
-		}
-
-	}
-
-	private void setLeftGoalState(String message) {
-		if (world.isRightSide()) {
-			String[] params = message.split("(goal l)")[1].split("[ \\)]");
-			world.setDistToEnemyGoal(Double.parseDouble(params[2]));
-			world.setAngleToEnemyGoal(Double.parseDouble(params[3]));
-		} else {
-			String[] params = message.split("(goal l)")[1].split("[ \\)]");
-			world.setDistToFriendlyGoal(Double.parseDouble(params[2]));
-			world.setAngleToFriendlyGoal(Double.parseDouble(params[3]));
-		}
-
-	}
-
-	private void setRightGoalState(String message) {
-		if (world.isLeftSide()) {
-			String[] params = message.split("(goal r)")[1].split("[ \\)]");
-			world.setDistToEnemyGoal(Double.parseDouble(params[2]));
-			world.setAngleToEnemyGoal(Double.parseDouble(params[3]));
-		} else {
-			String[] params = message.split("(goal r)")[1].split("[ \\)]");
-			world.setDistToFriendlyGoal(Double.parseDouble(params[2]));
-			world.setAngleToFriendlyGoal(Double.parseDouble(params[3]));
-		}
-
-	}
 }
