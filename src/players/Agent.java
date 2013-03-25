@@ -9,9 +9,10 @@ import java.net.UnknownHostException;
 
 import utilities.Constants;
 import utilities.Parser;
+import utilities.TimeListener;
 import utilities.WorldState;
 
-public abstract class Agent {
+public abstract class Agent implements TimeListener{
 
 	private DatagramSocket socket;
 	protected WorldState world;
@@ -42,6 +43,12 @@ public abstract class Agent {
 		initConnection();
 		run();
 
+	}
+	
+
+	@Override
+	public void newCycle() {
+		
 	}
 
 	public void moveFriendlyKickoff() {
