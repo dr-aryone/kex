@@ -19,6 +19,7 @@ public abstract class Agent {
 	private InetAddress ip;
 	private boolean goalie;
 	private int role;
+	private boolean hasMoved;
 
 	public Agent(int role) {
 		goalie = false;
@@ -37,37 +38,40 @@ public abstract class Agent {
 		world = new WorldState();
 		parser = new Parser(world, socket);
 		parser.start();
-
+		hasMoved = false;
 		initConnection();
 		run();
 
 	}
 
 	public void moveFriendlyKickoff() {
-		if (world.isRightSide()) {
-			turn(180);
-		}
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-		}
-		switch (role) {
-		case Constants.Team.GOALIE:
-			move(-50, 0);
-			break;
-		case Constants.Team.OUTER_LEFT_DEFENDER:
-		case Constants.Team.INNER_LEFT_DEFENDER:
-		case Constants.Team.INNER_RIGHT_DEFENDER:
-		case Constants.Team.OUTER_RIGHT_DEFENDER:
-		case Constants.Team.RIGHT_MID:
-		case Constants.Team.MID_MID:
-		case Constants.Team.LEFT_MID:
-		case Constants.Team.LEFT_WING:
-		case Constants.Team.CENTER_FORWARD:
-			move(Constants.CenterForward.FRIENDLY_KICKOFF_X,
-					Constants.CenterForward.FRIENDLY_KICKOFF_Y);
-			break;
-		case Constants.Team.RIGHT_WING:
+		if (!hasMoved) {
+			if (world.isRightSide()) {
+				turn(180);
+			}
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+			}
+			switch (role) {
+			case Constants.Team.GOALIE:
+				move(-50, 0);
+				break;
+			case Constants.Team.OUTER_LEFT_DEFENDER:
+			case Constants.Team.INNER_LEFT_DEFENDER:
+			case Constants.Team.INNER_RIGHT_DEFENDER:
+			case Constants.Team.OUTER_RIGHT_DEFENDER:
+			case Constants.Team.RIGHT_MID:
+			case Constants.Team.MID_MID:
+			case Constants.Team.LEFT_MID:
+			case Constants.Team.LEFT_WING:
+			case Constants.Team.CENTER_FORWARD:
+				move(Constants.CenterForward.FRIENDLY_KICKOFF_X,
+						Constants.CenterForward.FRIENDLY_KICKOFF_Y);
+				break;
+			case Constants.Team.RIGHT_WING:
+			}
+			hasMoved = true;
 		}
 	}
 
@@ -89,10 +93,10 @@ public abstract class Agent {
 		goalie = true;
 	}
 
-	private void initConnection(){
-		String msg = "(init " + Constants.Team.NAME + ")";
+	private void initConnection() {
+		String msg = "(init " + Constants.Team.NAME + "(version 13))";
 		if (goalie) {
-			msg = "(init " + Constants.Team.NAME + " 1)";
+			msg = "(init " + Constants.Team.NAME + " (version 13) 1)";
 		}
 		sendMessage(msg);
 	}
@@ -130,7 +134,9 @@ public abstract class Agent {
 	 * Goalie only
 	 */
 	public void catchBall(double direction) {
-		sendMessage("(catch " + direction + ")");
+		if (goalie) {
+			sendMessage("(catch " + direction + ")");
+		}
 	}
 
 	private void sendMessage(String message) {

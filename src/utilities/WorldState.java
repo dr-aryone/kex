@@ -1,5 +1,7 @@
 package utilities;
 
+import java.util.HashMap;
+
 public class WorldState {
 	public static final int PLAY_ON = 1;
 	public static final int ENEMY_KICK_OFF = 2;
@@ -13,9 +15,22 @@ public class WorldState {
 	private boolean isLeftSide;
 	private double angleToFriendlyGoal;
 	private double distToFriendlyGoal;
+	private HashMap<String, Integer> lastSeen = new HashMap<String, Integer>();
+	private HashMap<String, Double> angleToObjects = new HashMap<String, Double>();
+	private HashMap<String, Integer> distanceToObjects = new HashMap<String, Integer>();
 
 
-
+	public void sawObjectAtTime(String object, int time) {
+		lastSeen.put(object, time);
+	}
+	
+	public void angleToObject(String object, double angle) {
+		angleToObjects.put(object, angle);
+	}
+	
+	public void distanceToObject(String object, int distance) {
+		distanceToObjects.put(object, distance);
+	}
 
 	public double getDistToFriendlyGoal() {
 		return distToFriendlyGoal;
