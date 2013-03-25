@@ -3,7 +3,6 @@ package players;
 import utilities.Constants;
 import utilities.WorldState;
 
-
 public class CenterForward extends Agent {
 
 	public static void main(String[] args) {
@@ -17,22 +16,22 @@ public class CenterForward extends Agent {
 	@Override
 	public void run() {
 		while (true) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			switch (world.getState()) {
-			case WorldState.PLAY_ON:
-				if (world.getAngleToBall() == Constants.Params.NOT_DEFINED) {
-					turn(90);
-				} else {
-					tryToKick();
-					runToBall();
+			if (newData) {
+				newData = false;
+				switch (world.getState()) {
+				case WorldState.PLAY_ON:
+					if (world.getAngleToBall() == Constants.Params.NOT_DEFINED) {
+						turn(90);
+					} else {
+						tryToKick();
+						runToBall();
+					}
+				case WorldState.BEFORE_KICK_OFF:
+					moveFriendlyKickoff();
+				default:
 				}
-			case WorldState.BEFORE_KICK_OFF:
-				moveFriendlyKickoff();
-			default:
+			} else {
+				Thread.yield();
 			}
 		}
 	}

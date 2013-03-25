@@ -9,7 +9,7 @@ public class MyTimer extends Thread {
 		listenerList = new EventListenerList();
 	}
 
-	public void listenToCycles(TimeListener l) {
+	public void addListener(TimeListener l) {
 		listenerList.add(TimeListener.class, l);
 	}
 
