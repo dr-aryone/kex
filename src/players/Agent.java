@@ -6,6 +6,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Iterator;
+import java.util.Set;
 
 import utilities.Constants;
 import utilities.Parser;
@@ -108,16 +110,36 @@ public abstract class Agent implements TimeListener{
 		sendMessage(msg);
 	}
 
-	public void dash(int power) {
-		sendMessage("(dash " + power + ")");
+	public void dash(int power, double direction) {
+		sendMessage("(dash " + power + " " + direction + ")");
 	}
 
 	public void turn(double direction) {
+		updateAngles(direction);
 		sendMessage("(turn " + direction + ")");
+	}
+
+	private void updateAngles(double direction) {
+		Set<String> keys = world.getAngleToObjects().keySet();
+		for(Iterator<String> i = keys.iterator(); i.hasNext();) {
+			
+		}
 	}
 
 	public void kick(int power, double direction) {
 		sendMessage("(kick " + power + " " + direction + ")");
+	}
+	
+	public void runToBall() {
+		if (world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED) {
+			if (Math.abs(world.getAngleToBall()) > 10 && world.getDistToBall() > 5) {
+				turn(world.getAngleToBall());
+			} else {
+				dash(100, world.getAngleToBall());
+			}
+		} else {
+			turn(45);
+		}
 	}
 
 	/**

@@ -39,22 +39,20 @@ public class Goalie extends Agent {
 	}
 
 	private void alignToBall() {
-		//if (!canSeeBall()) {
-		//	turn(45);
-		//}
+		if (!canSeeBall()) {
+			returnToGoal();
+			turn(45);
+		}
+
+	}
+
+	private void returnToGoal() {
+		
+		turn(world.getAngleToFriendlyGoal());
+		
 	}
 
 	private void catchTheBall() {
 		catchBall(world.getAngleToBall());
 	}
-
-	private void runToBall() {
-		if (Math.abs(world.getAngleToBall()) > 10) {
-			turn(world.getAngleToBall());
-		} else {
-			dash(100);
-		}
-
-	}
-
 }

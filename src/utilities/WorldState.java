@@ -20,6 +20,10 @@ public class WorldState {
 	private HashMap<String, Integer> distanceToObjects = new HashMap<String, Integer>();
 
 
+	public HashMap<String, Double> getAngleToObjects() {
+		return angleToObjects;
+	}
+	
 	public void sawObjectAtTime(String object, int time) {
 		lastSeen.put(object, time);
 	}
