@@ -177,6 +177,7 @@ public abstract class Agent implements TimeListener {
 	}
 
 	private void sendMessage(String message) {
+		message += "\u0000";
 		byte[] buf = message.getBytes();
 		DatagramPacket msg = new DatagramPacket(buf, buf.length, Constants.Server.IP,
 				Constants.Server.PORT);

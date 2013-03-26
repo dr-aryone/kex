@@ -31,7 +31,6 @@ public class Parser extends Thread {
 				hasBeenInit = true;
 			}
 			String message = new String(p.getData());
-			System.out.println(message);
 			parse(message);
 			world.newData();
 		}
@@ -89,9 +88,10 @@ public class Parser extends Thread {
 		int space = message.indexOf(' ');
 		String firstParam = message.substring(0, space);
 
-		message = message.substring(space, message.length() - 2);
+		message = message.substring(space, message.length());
 
 		if (firstParam.equals("referee")) {
+			System.out.println("referee says "+message);
 			parseState(message);
 		}
 
@@ -162,6 +162,10 @@ public class Parser extends Thread {
 
 	private ParseContext<Integer> parseTime(String message) {
 		int firstSpace = message.indexOf(' ', 1);
+		int firstPara = message.indexOf(')');
+		if(firstPara < firstSpace) {
+			return new ParseContext<Integer>("", 0);
+		}
 		int time = Integer.parseInt(message.substring(0, firstSpace));
 		message = message.substring(firstSpace, message.length() - 1).trim();
 		return new ParseContext<Integer>(message, time);
