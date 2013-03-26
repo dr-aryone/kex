@@ -20,10 +20,11 @@ public class CenterForward extends Agent {
 				switch (world.getState()) {
 				case WorldState.PLAY_ON:
 					if (canSeeBall()) {
-						tryToKick();
-						runToBall();
+						if(!tryToKick()) {
+							runToBall();
+						}
 					} else {
-						turn(10);
+						//turn(45);
 					}
 					break;
 				case WorldState.BEFORE_KICK_OFF:
@@ -41,10 +42,12 @@ public class CenterForward extends Agent {
 		}
 	}
 
-	private void tryToKick() {
-		if (world.getDistToBall() < 1) {
+	private boolean tryToKick() {
+		if (world.getDistToBall() < Double.parseDouble(world.getServerParam("kickable_margin"))) {
 			kick(100, world.getAngleToEnemyGoal());
+			return true;
+		} else {
+			return false;
 		}
 	}
-
 }

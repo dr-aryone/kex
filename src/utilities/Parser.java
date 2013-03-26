@@ -31,6 +31,7 @@ public class Parser extends Thread {
 				hasBeenInit = true;
 			}
 			String message = new String(p.getData());
+			System.out.println(message);
 			parse(message);
 			world.newData();
 		}

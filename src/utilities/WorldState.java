@@ -34,7 +34,6 @@ public class WorldState {
 		if(time == null) {
 			return Constants.Params.NOT_DEFINED;
 		}
-		System.out.println("saw "+key+" at "+time+" now it is "+getCurrentTime());
 		if(getCurrentTime() - time > 50) {
 			return Constants.Params.NOT_DEFINED;
 		}
