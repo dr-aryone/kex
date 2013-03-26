@@ -26,7 +26,7 @@ public abstract class Agent implements TimeListener {
 	private boolean goalie;
 	private int role;
 	private boolean hasMoved;
-	private Queue<String> queue;
+	protected Queue<String> queue;
 
 	public Agent(int role) {
 		if (role == Constants.Team.GOALIE) {
@@ -127,8 +127,8 @@ public abstract class Agent implements TimeListener {
 		queue.add("(dash " + power + " " + direction + ")");
 	}
 
-	public void turn(double direction) {
-		// updateAngles(direction);
+	public void turn(int direction) {
+		updateAngles(direction);
 		queue.add("(turn " + direction + ")");
 	}
 
@@ -147,6 +147,9 @@ public abstract class Agent implements TimeListener {
 				newAngle = 360 + newAngle;
 			}
 			angleToObjects.put(key, newAngle);
+			if(key.equals("b")) {
+				System.out.println("BOLLEEEEEEEEEEEEEN pre: "+ previousAngle + "new: " + newAngle);
+			}
 		}
 	}
 

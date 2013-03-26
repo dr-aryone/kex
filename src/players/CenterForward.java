@@ -24,7 +24,7 @@ public class CenterForward extends Agent {
 							runToBall();
 						}
 					} else {
-						//turn(45);
+						turn(45);
 					}
 					break;
 				case WorldState.FRIENDLY_KICK_OFF:
@@ -45,7 +45,9 @@ public class CenterForward extends Agent {
 	}
 
 	private boolean tryToKick() {
+		System.out.println("kicku? dist: " + world.getDistToBall() + "\tmargin: " + world.getServerParam("kickable_margin"));
 		if (world.getDistToBall() < Double.parseDouble(world.getServerParam("kickable_margin"))) {
+			System.out.println("KICKKKUUUUUUUUUUUUUUUU " + queue.size());
 			kick(100, world.getAngleToEnemyGoal());
 			return true;
 		} else {
