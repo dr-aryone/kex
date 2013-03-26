@@ -15,6 +15,20 @@ public class WorldState {
 	private boolean newData;
 	private int state;
 	private int currentTime;
+	private double distanceToBall;
+	private int angleToBall;
+
+	public double getDistanceToBall() {
+		return distanceToBall;
+	}
+
+	public void setDistanceToBall(double distanceToBall) {
+		this.distanceToBall = distanceToBall;
+	}
+
+	public void setAngleToBall(int angleToBall) {
+		this.angleToBall = angleToBall;
+	}
 
 	public int getCurrentTime() {
 		return currentTime;
@@ -24,7 +38,7 @@ public class WorldState {
 		this.currentTime = currentTime;
 	}
 
-	public double getAngleToObject(String key) {
+	public int getAngleToObject(String key) {
 		Integer angle = angleToObjects.get(key);
 		if(angle == null) {
 			return Constants.Params.NOT_DEFINED;
@@ -34,8 +48,7 @@ public class WorldState {
 		if(time == null) {
 			return Constants.Params.NOT_DEFINED;
 		}
-		System.out.println("saw "+key+" at "+time+" now it is "+getCurrentTime());
-		if(getCurrentTime() - time > 50) {
+		if(getCurrentTime() - time > 5) {
 			return Constants.Params.NOT_DEFINED;
 		}
 		
@@ -95,7 +108,7 @@ public class WorldState {
 		}
 	}
 
-	public double getAngleToFriendlyGoal() {
+	public int getAngleToFriendlyGoal() {
 		if (isLeftSide()) {
 			return getAngleToObject("goal l");
 		} else {
@@ -123,12 +136,12 @@ public class WorldState {
 	}
 
 	public double getDistToBall() {
-		return getDistanceToObject("b");
+		return getDistanceToBall();
 	}
 
 
-	public double getAngleToBall() {
-		return getAngleToObject("b");
+	public int getAngleToBall() {
+		return angleToBall;
 	}
 
 

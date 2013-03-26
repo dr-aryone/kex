@@ -141,12 +141,17 @@ public class Parser extends Thread {
 			} catch (java.lang.StringIndexOutOfBoundsException e) {
 				hasNext = false;
 			}
-
+			
+			/**
 			if (params.length > 0) {
 				world.distanceToObject(item, Double.parseDouble(params[0]));
 			}
 			if (params.length > 1) {
 				world.angleToObject(item, Integer.parseInt(params[1]));
+			}**/
+			if(item.equals("b")) {
+				world.setDistanceToBall(Double.parseDouble(params[0]));
+				world.setAngleToBall(Integer.parseInt(params[1]));
 			}
 
 		}

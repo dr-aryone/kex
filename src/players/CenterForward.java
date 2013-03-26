@@ -26,8 +26,10 @@ public class CenterForward extends Agent {
 						turn(10);
 					}
 					break;
+				case WorldState.FRIENDLY_KICK_OFF:
 				case WorldState.BEFORE_KICK_OFF:
 					moveFriendlyKickoff();
+					break;
 				default:
 				}
 				world.dataProcessed();
