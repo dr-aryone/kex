@@ -15,20 +15,7 @@ public class WorldState {
 	private boolean newData;
 	private int state;
 	private int currentTime;
-	private double distanceToBall;
-	private int angleToBall;
 
-	public double getDistanceToBall() {
-		return distanceToBall;
-	}
-
-	public void setDistanceToBall(double distanceToBall) {
-		this.distanceToBall = distanceToBall;
-	}
-
-	public void setAngleToBall(int angleToBall) {
-		this.angleToBall = angleToBall;
-	}
 
 	public int getCurrentTime() {
 		return currentTime;
@@ -137,12 +124,12 @@ public class WorldState {
 	}
 
 	public double getDistToBall() {
-		return getDistanceToBall();
+		return getDistanceToObject("b");
 	}
 
 
 	public int getAngleToBall() {
-		return angleToBall;
+		return getAngleToObject("b");
 	}
 
 
