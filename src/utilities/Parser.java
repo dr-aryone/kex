@@ -131,7 +131,7 @@ public class Parser extends Thread {
 				break;
 			}
 			message = itemContext.message;
-			String item = itemContext.parsedData;
+			String item = itemContext.parsedData.toLowerCase();
 
 			world.sawObjectAtTime(item, time);
 			int rightPara = message.indexOf(')');
@@ -143,10 +143,10 @@ public class Parser extends Thread {
 			}
 
 			if (params.length > 0) {
-				world.angleToObject(item, Double.parseDouble(params[0]));
+				world.distanceToObject(item, Double.parseDouble(params[0]));
 			}
 			if (params.length > 1) {
-				world.distanceToObject(item, Integer.parseInt(params[1]));
+				world.angleToObject(item, Integer.parseInt(params[1]));
 			}
 
 		}
@@ -163,10 +163,11 @@ public class Parser extends Thread {
 	private ParseContext<Integer> parseTime(String message) {
 		int firstSpace = message.indexOf(' ', 1);
 		int firstPara = message.indexOf(')');
-		if(firstPara < firstSpace) {
+		if(firstPara < firstSpace || firstSpace == -1) {
 			return new ParseContext<Integer>("", 0);
 		}
 		int time = Integer.parseInt(message.substring(0, firstSpace));
+		world.setCurrentTime(time);
 		message = message.substring(firstSpace, message.length() - 1).trim();
 		return new ParseContext<Integer>(message, time);
 	}

@@ -23,8 +23,9 @@ public class CenterForward extends Agent {
 						tryToKick();
 						runToBall();
 					} else {
-						turn(90);
+						turn(10);
 					}
+					break;
 				case WorldState.BEFORE_KICK_OFF:
 					moveFriendlyKickoff();
 				default:
@@ -42,11 +43,7 @@ public class CenterForward extends Agent {
 
 	private void tryToKick() {
 		if (world.getDistToBall() < 1) {
-			if (canSeeEnemyGoal()) {
-				kick(100, world.getAngleToEnemyGoal());
-			} else {
-				turn(45);
-			}
+			kick(100, world.getAngleToEnemyGoal());
 		}
 	}
 

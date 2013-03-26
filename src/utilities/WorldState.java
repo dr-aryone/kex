@@ -9,23 +9,51 @@ public class WorldState {
 	public static final int BEFORE_KICK_OFF = 4;
 	private boolean isLeftSide;
 	private HashMap<String, Integer> lastSeen = new HashMap<String, Integer>();
-	private HashMap<String, Double> angleToObjects = new HashMap<String, Double>();
-	private HashMap<String, Integer> distanceToObjects = new HashMap<String, Integer>();
+	private HashMap<String, Integer> angleToObjects = new HashMap<String, Integer>();
+	private HashMap<String, Double> distanceToObjects = new HashMap<String, Double>();
 	private HashMap<String, String> serverParams = new HashMap<String, String>();
 	private boolean newData;
 	private int state;
+	private int currentTime;
+
+	public int getCurrentTime() {
+		return currentTime;
+	}
+
+	public void setCurrentTime(int currentTime) {
+		this.currentTime = currentTime;
+	}
 
 	public double getAngleToObject(String key) {
-		Double angle = angleToObjects.get(key);
+		Integer angle = angleToObjects.get(key);
 		if(angle == null) {
 			return Constants.Params.NOT_DEFINED;
 		}
+		
+		Integer time = lastSeen.get(key);
+		if(time == null) {
+			return Constants.Params.NOT_DEFINED;
+		}
+		System.out.println("saw "+key+" at "+time+" now it is "+getCurrentTime());
+		if(getCurrentTime() - time > 50) {
+			return Constants.Params.NOT_DEFINED;
+		}
+		
 		return angle;
 	}
 	
 	public double getDistanceToObject(String key) {
-		Integer dist = distanceToObjects.get(key);
+		Double dist = distanceToObjects.get(key);
 		if(dist == null) {
+			return Constants.Params.NOT_DEFINED;
+		}
+		
+		Integer time = lastSeen.get(key);
+		if(time == null) {
+			return Constants.Params.NOT_DEFINED;
+		}
+		
+		if(getCurrentTime() - time > 5) {
 			return Constants.Params.NOT_DEFINED;
 		}
 		return dist;
@@ -43,7 +71,7 @@ public class WorldState {
 		serverParams.put(key, obj);
 	}
 
-	public HashMap<String, Double> getAngleToObjects() {
+	public HashMap<String, Integer> getAngleToObjects() {
 		return angleToObjects;
 	}
 
@@ -51,11 +79,11 @@ public class WorldState {
 		lastSeen.put(object, time);
 	}
 
-	public void angleToObject(String object, double angle) {
+	public void angleToObject(String object, int angle) {
 		angleToObjects.put(object, angle);
 	}
 
-	public void distanceToObject(String object, int distance) {
+	public void distanceToObject(String object, double distance) {
 		distanceToObjects.put(object, distance);
 	}
 
@@ -95,12 +123,12 @@ public class WorldState {
 	}
 
 	public double getDistToBall() {
-		return getDistanceToObject("ball");
+		return getDistanceToObject("b");
 	}
 
 
 	public double getAngleToBall() {
-		return getAngleToObject("ball");
+		return getAngleToObject("b");
 	}
 
 
