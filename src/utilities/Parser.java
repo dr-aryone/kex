@@ -33,7 +33,6 @@ public class Parser extends Thread {
 			String message = new String(p.getData());
 			System.out.println(message);
 			parse(message);
-			world.newData();
 		}
 	}
 
@@ -43,6 +42,7 @@ public class Parser extends Thread {
 		message = message.substring(firstSpace, message.length() - 1).trim();
 		if (command.equals("see")) {
 			parseSee(message);
+			world.newData();
 		} else if (command.equals("sense_body")) {
 
 		} else if (command.equals("hear")) {

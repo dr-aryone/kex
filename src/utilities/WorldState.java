@@ -155,15 +155,15 @@ public class WorldState {
 		return !isLeftSide;
 	}
 
-	public void newData() {
+	public synchronized void newData() {
 		newData = true;
 	}
 
-	public boolean hasNewData() {
+	public synchronized boolean hasNewData() {
 		return newData;
 	}
 
-	public void dataProcessed() {
+	public synchronized void dataProcessed() {
 		newData = false;
 	}
 

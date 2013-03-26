@@ -17,6 +17,7 @@ public class CenterForward extends Agent {
 	public void run() {
 		while (true) {
 			if (world.hasNewData()) {
+				System.out.println("NEW DATA");
 				switch (world.getState()) {
 				case WorldState.PLAY_ON:
 					if (canSeeBall()) {
@@ -24,7 +25,7 @@ public class CenterForward extends Agent {
 							runToBall();
 						}
 					} else {
-						//turn(45);
+						turn(45);
 					}
 					break;
 				case WorldState.FRIENDLY_KICK_OFF:
