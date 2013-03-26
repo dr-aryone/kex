@@ -16,8 +16,7 @@ public class Goalie extends Agent {
 	@Override
 	public void run() {
 		while (true) {
-			if (newData) {
-				newData = false;
+			if (world.hasNewData()) {
 				switch (world.getState()) {
 				case WorldState.BEFORE_KICK_OFF:
 					moveFriendlyKickoff();
@@ -31,6 +30,7 @@ public class Goalie extends Agent {
 						alignToBall();
 					}
 				}
+				world.dataProcessed();
 			} else {
 				try {
 					Thread.sleep(10);

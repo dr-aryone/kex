@@ -27,7 +27,6 @@ public abstract class Agent implements TimeListener {
 	private int role;
 	private boolean hasMoved;
 	private Queue<String> queue;
-	public boolean newData;
 
 	public Agent(int role) {
 		if(role == Constants.Team.GOALIE) {
