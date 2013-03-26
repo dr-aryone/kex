@@ -92,7 +92,6 @@ public class Parser extends Thread {
 		message = message.substring(space, message.length());
 
 		if (firstParam.equals("referee")) {
-			System.out.println("referee says "+message);
 			parseState(message);
 		}
 
@@ -143,16 +142,11 @@ public class Parser extends Thread {
 				hasNext = false;
 			}
 			
-			/**
 			if (params.length > 0) {
 				world.distanceToObject(item, Double.parseDouble(params[0]));
 			}
 			if (params.length > 1) {
 				world.angleToObject(item, Integer.parseInt(params[1]));
-			}**/
-			if(item.equals("b")) {
-				world.setDistanceToBall(Double.parseDouble(params[0]));
-				world.setAngleToBall(Integer.parseInt(params[1]));
 			}
 
 		}
