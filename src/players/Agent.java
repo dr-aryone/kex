@@ -74,10 +74,6 @@ public abstract class Agent implements TimeListener {
 			if (world.isRightSide()) {
 				turn(180);
 			}
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-			}
 			switch (role) {
 			case Constants.Team.GOALIE:
 				move(-50, 0);
@@ -159,7 +155,6 @@ public abstract class Agent implements TimeListener {
 
 	public void runToBall() {
 		if (Math.abs(world.getAngleToBall()) > 10) {
-			System.out.println(world.getAngleToBall());
 			turn(world.getAngleToBall());
 		} else {
 			dash(100, world.getAngleToBall());
