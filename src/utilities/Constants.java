@@ -1,8 +1,11 @@
 package utilities;
 
+import java.net.InetAddress;
+
 public final class Constants {
 	public static final class Server {
-		public static final String IP = "127.0.0.1";
+		public static final String INIT_ADDRESS = "127.0.0.1";
+		public static InetAddress IP;
 		public static int PORT = 6000;
 	}
 

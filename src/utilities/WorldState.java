@@ -19,6 +19,7 @@ public class WorldState {
 	private HashMap<String, Double> angleToObjects = new HashMap<String, Double>();
 	private HashMap<String, Integer> distanceToObjects = new HashMap<String, Integer>();
 	private HashMap<String, String> serverParams = new HashMap<String, String>();
+	private boolean newData;
 
 	public double getAngleToObject(String key) {
 		return angleToObjects.get(key);
@@ -124,6 +125,18 @@ public class WorldState {
 
 	public boolean isRightSide() {
 		return !isLeftSide;
+	}
+
+	public void newData() {
+		newData = true;
+	}
+	
+	public boolean hasNewData() {
+		return newData;
+	}
+
+	public void dataProcessed() {
+		newData = false;
 	}
 	
 	

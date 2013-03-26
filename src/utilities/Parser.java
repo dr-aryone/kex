@@ -6,9 +6,9 @@ import java.net.DatagramSocket;
 
 public class Parser extends Thread {
 
-	private static final int EXPIRATION_TIME = 50;
 	WorldState world;
 	DatagramSocket socket;
+	private boolean hasBeenInit = false;
 
 	public Parser(WorldState world, DatagramSocket socket) {
 		this.world = world;
@@ -25,9 +25,15 @@ public class Parser extends Thread {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			if(!hasBeenInit) {
+				Constants.Server.PORT = p.getPort();
+				Constants.Server.IP = p.getAddress();
+				hasBeenInit = true;
+			}
 			String message = new String(p.getData());
+			System.out.println(message);
 			parse(message);
-
+			world.newData();
 		}
 	}
 
@@ -35,7 +41,6 @@ public class Parser extends Thread {
 		int firstSpace = message.indexOf(' ');
 		String command = message.substring(1, firstSpace);
 		message = message.substring(firstSpace, message.length() - 1).trim();
-		System.out.println(message);
 		if (command.equals("see")) {
 			parseSee(message);
 		} else if (command.equals("sense_body")) {
@@ -80,7 +85,6 @@ public class Parser extends Thread {
 	private void parseAural(String message) {
 		ParseContext<Integer> timeContext = parseTime(message);
 		message = timeContext.message;
-		int time = timeContext.parsedData;
 
 		int space = message.indexOf(' ');
 		String firstParam = message.substring(0, space);

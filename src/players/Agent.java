@@ -8,6 +8,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 
 import utilities.Constants;
@@ -16,24 +18,28 @@ import utilities.Parser;
 import utilities.TimeListener;
 import utilities.WorldState;
 
-public abstract class Agent implements TimeListener{
+public abstract class Agent implements TimeListener {
 
 	private DatagramSocket socket;
 	protected WorldState world;
 	private Parser parser;
-	private InetAddress ip;
 	private boolean goalie;
 	private int role;
 	private boolean hasMoved;
-	private String nextMessage;
+	private Queue<String> queue;
 	public boolean newData;
 
 	public Agent(int role) {
-		goalie = false;
-		nextMessage = "";
+		if(role == Constants.Team.GOALIE) {
+			goalie = true;
+		} else {
+			goalie = false;
+		}
+		queue = new LinkedList<String>();
 		this.role = role;
 		try {
-			ip = InetAddress.getByName(Constants.Server.IP);
+			Constants.Server.IP = InetAddress
+					.getByName(Constants.Server.INIT_ADDRESS);
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 		}
@@ -47,30 +53,21 @@ public abstract class Agent implements TimeListener{
 		parser = new Parser(world, socket);
 		parser.start();
 		hasMoved = false;
-		
+
 		MyTimer t = new MyTimer();
 		t.addListener(this);
 		t.start();
-		
+
 		initConnection();
-		try {
-			socket = new DatagramSocket();
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		run();
 
 	}
-	
 
 	@Override
 	public void newCycle() {
-		if(!nextMessage.equals("")) {
-			sendMessage(nextMessage);
+		if (!queue.isEmpty()) {
+			sendMessage(queue.poll());
 		}
-		nextMessage = "";
-		newData = true;
 	}
 
 	public void moveFriendlyKickoff() {
@@ -115,28 +112,25 @@ public abstract class Agent implements TimeListener{
 	public abstract void run();
 
 	private void move(int x, int y) {
-		nextMessage = "(move " + x + " " + y + ")";
-	}
-
-	protected void isGoalie() {
-		goalie = true;
+		queue.add("(move " + x + " " + y + ")");
 	}
 
 	private void initConnection() {
-		String msg = "(init " + Constants.Team.NAME + " (version 13))";
+		String msg = "(init " + Constants.Team.NAME + " (version 15))";
 		if (goalie) {
-			msg = "(init " + Constants.Team.NAME + " (version 13) 1)";
+			msg = "(init " + Constants.Team.NAME + " (version 15) (goalie))";
 		}
-		sendMessage(msg);
+		queue.add(msg);
+		
 	}
 
 	public void dash(int power, double direction) {
-		nextMessage = "(dash " + power + " " + direction + ")";
+		queue.add("(dash " + power + " " + direction + ")");
 	}
 
 	public void turn(double direction) {
 		updateAngles(direction);
-		nextMessage = "(turn " + direction + ")";
+		queue.add("(turn " + direction + ")");
 	}
 
 	private void updateAngles(double direction) {
@@ -144,12 +138,12 @@ public abstract class Agent implements TimeListener{
 		Double previousAngle, newAngle;
 		HashMap<String, Double> angleToObjects = world.getAngleToObjects();
 		Set<String> keys = angleToObjects.keySet();
-		for(Iterator<String> i = keys.iterator(); i.hasNext();) {
+		for (Iterator<String> i = keys.iterator(); i.hasNext();) {
 			key = i.next();
 			previousAngle = angleToObjects.get(key);
 			newAngle = previousAngle - direction;
 			if (newAngle > 180) {
-				newAngle = -1*(360 - newAngle);
+				newAngle = -1 * (360 - newAngle);
 			} else if (newAngle < -180) {
 				newAngle = 360 + newAngle;
 			}
@@ -158,12 +152,13 @@ public abstract class Agent implements TimeListener{
 	}
 
 	public void kick(int power, double direction) {
-		nextMessage = "(kick " + power + " " + direction + ")";
+		queue.add("(kick " + power + " " + direction + ")");
 	}
-	
+
 	public void runToBall() {
 		if (world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED) {
-			if (Math.abs(world.getAngleToBall()) > 10 && world.getDistToBall() > 5) {
+			if (Math.abs(world.getAngleToBall()) > 10
+					&& world.getDistToBall() > 5) {
 				turn(world.getAngleToBall());
 			} else {
 				dash(100, world.getAngleToBall());
@@ -178,17 +173,17 @@ public abstract class Agent implements TimeListener{
 	 */
 	public void catchBall(double direction) {
 		if (goalie) {
-			nextMessage = "(catch " + direction + ")";
+			queue.add("(catch " + direction + ")");
 		}
 	}
 
 	private void sendMessage(String message) {
-		System.out.println(">>"+message);
 		byte[] buf = message.getBytes();
-		DatagramPacket msg = new DatagramPacket(buf, buf.length, ip,
+		DatagramPacket msg = new DatagramPacket(buf, buf.length, Constants.Server.IP,
 				Constants.Server.PORT);
 		try {
 			socket.send(msg);
+			System.out.println(Constants.Server.IP+":"+Constants.Server.PORT+">>" + message);
 		} catch (IOException e) {
 			System.err.println("IOException");
 		}

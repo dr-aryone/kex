@@ -16,20 +16,20 @@ public class CenterForward extends Agent {
 	@Override
 	public void run() {
 		while (true) {
-			if (newData) {
-				newData = false;
+			if (world.hasNewData()) {
 				switch (world.getState()) {
 				case WorldState.PLAY_ON:
-					if (world.getAngleToBall() == Constants.Params.NOT_DEFINED) {
-						turn(90);
-					} else {
+					if (canSeeBall()) {
 						tryToKick();
 						runToBall();
+					} else {
+						turn(90);
 					}
 				case WorldState.BEFORE_KICK_OFF:
 					moveFriendlyKickoff();
 				default:
 				}
+				world.dataProcessed();
 			} else {
 				try {
 					Thread.sleep(10);
@@ -42,7 +42,7 @@ public class CenterForward extends Agent {
 
 	private void tryToKick() {
 		if (world.getDistToBall() < 1) {
-			if (world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED) {
+			if (canSeeEnemyGoal()) {
 				kick(100, world.getAngleToEnemyGoal());
 			} else {
 				turn(45);
