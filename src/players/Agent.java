@@ -106,7 +106,7 @@ public abstract class Agent implements TimeListener {
 
 	public abstract void run();
 
-	private void move(int x, int y) {
+	private void move(double x, double y) {
 		queue.add("(move " + x + " " + y + ")");
 	}
 
@@ -177,7 +177,6 @@ public abstract class Agent implements TimeListener {
 				Constants.Server.IP, Constants.Server.PORT);
 		try {
 			socket.send(msg);
-			System.out.println(message);
 		} catch (IOException e) {
 			System.err.println("IOException");
 		}
