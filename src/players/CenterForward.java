@@ -50,7 +50,6 @@ public class CenterForward extends Agent {
 		if (world.getDistToBall() < Double.parseDouble(world.getServerParam("kickable_margin"))) {
 			if(canSeeEnemyGoal()) {
 				System.out.println("KICKKUUUUUUUUUUU");
-				System.out.println("fitteclipse");
 				kick(100, world.getAngleToEnemyGoal());
 			} else {
 				System.out.println("TURNUUUUUUUUUUUU");

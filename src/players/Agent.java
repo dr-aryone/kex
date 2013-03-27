@@ -101,7 +101,6 @@ public abstract class Agent implements TimeListener {
 	}
 
 	public boolean canSeeEnemyGoal() {
-		System.out.println("ANGLE: "+world.getAngleToEnemyGoal()+"UNDEF :"+Constants.Params.NOT_DEFINED);
 		return world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED;
 	}
 
@@ -145,7 +144,7 @@ public abstract class Agent implements TimeListener {
 			}
 			angleToObjects.put(key, newAngle);
 			if(key.equals("b")) {
-				System.out.println("BOLLEEEEEEEEEEEEEN pre: "+ previousAngle + "new: " + newAngle);
+				System.out.println("BOLLEEEEEEEN pre: "+ previousAngle + "new: " + newAngle + "\tQueue " + queue.size());
 			}
 		}
 	}
@@ -155,7 +154,7 @@ public abstract class Agent implements TimeListener {
 	}
 
 	public void runToBall() {
-		if (Math.abs(world.getAngleToBall()) > 10) {
+		if (Math.abs(world.getAngleToBall()) > 20) {
 			turn(world.getAngleToBall());
 		} else {
 			dash(100, world.getAngleToBall());
@@ -172,6 +171,7 @@ public abstract class Agent implements TimeListener {
 	}
 
 	private void sendMessage(String message) {
+		System.out.println(message); 	
 		message += "\u0000";
 		byte[] buf = message.getBytes();
 		DatagramPacket msg = new DatagramPacket(buf, buf.length,
