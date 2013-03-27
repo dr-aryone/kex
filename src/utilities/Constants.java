@@ -29,12 +29,12 @@ public final class Constants {
 	}
 
 	public static final class CenterForward {
-		public static final int START_X = -10;
-		public static final int START_Y = 0;
-		public static final int FRIENDLY_KICKOFF_X = -1;
-		public static final int FRIENDLY_KICKOFF_Y = -1;
-		public static final int ENEMY_KICKOFF_X = -10;
-		public static final int ENEMY_KICKOFF_Y = 0;
+		public static final double START_X = -10;
+		public static final double START_Y = 0;
+		public static final double FRIENDLY_KICKOFF_X = 0;
+		public static final double FRIENDLY_KICKOFF_Y = -0.5;
+		public static final double ENEMY_KICKOFF_X = -10;
+		public static final double ENEMY_KICKOFF_Y = 0;
 	}
 
 	public static final class Goalie {

@@ -90,17 +90,17 @@ public class WorldState {
 
 	public double getDistToFriendlyGoal() {
 		if (isLeftSide()) {
-			return getDistanceToObject("goal l");
+			return getDistanceToObject("g l");
 		} else {
-			return getDistanceToObject("goal r");
+			return getDistanceToObject("g r");
 		}
 	}
 
 	public int getAngleToFriendlyGoal() {
 		if (isLeftSide()) {
-			return getAngleToObject("goal l");
+			return getAngleToObject("g l");
 		} else {
-			return getAngleToObject("goal r");
+			return getAngleToObject("g r");
 		}	}
 
 	public boolean isLeftSide() {
@@ -117,9 +117,9 @@ public class WorldState {
 
 	public double getDistToEnemyGoal() {
 		if (isLeftSide()) {
-			return getDistanceToObject("goal r");
+			return getDistanceToObject("g r");
 		} else {
-			return getDistanceToObject("goal l");
+			return getDistanceToObject("g l");
 		}
 	}
 
@@ -143,9 +143,9 @@ public class WorldState {
 
 	public double getAngleToEnemyGoal() {
 		if (isLeftSide()) {
-			return getAngleToObject("goal r");
+			return getAngleToObject("g r");
 		} else {
-			return getAngleToObject("goal l");
+			return getAngleToObject("g l");
 		}
 	}
 
