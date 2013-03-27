@@ -10,7 +10,7 @@ public final class Constants {
 	}
 
 	public static final class Team {
-		public static final String NAME = "meinkejmakers2";
+		public static final String NAME = "meinkemakers";
 		public static final int GOALIE = 1;
 		public static final int OUTER_RIGHT_DEFENDER = 2;
 		public static final int INNER_RIGHT_DEFENDER = 3;

@@ -51,9 +51,9 @@ public class Goalie extends Agent {
 			} else if (world.getAngleToFriendlyGoal() > 0) { // gå mot höger
 																// stolpe
 				if (world.isRightSide()) {
-					dash(10, world.getAngleToObject("flag g r t"));
+					dash(10, world.getAngleToObject("f g r t"));
 				} else {
-					dash(10, world.getAngleToObject("flag g l b"));
+					dash(10, world.getAngleToObject("f g l b"));
 				}
 			} else { // gå mot vänster stolpe
 				if (world.isRightSide()) {
