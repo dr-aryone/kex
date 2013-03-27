@@ -19,12 +19,12 @@ public class RightWing extends Agent {
 			if (world.hasNewData()) {
 				switch (world.getState()) {
 				case WorldState.PLAY_ON:
-					if (canSeeBall()) {
-						if(!tryToKick()) {
+					if (canSeeBall() && world.getDistToBall() < 20) {
+						if (!tryToKick()) {
 							runToBall();
 						}
 					} else {
-						turn(45);
+						runToSlot();
 					}
 					break;
 				case WorldState.BEFORE_KICK_OFF:
@@ -43,11 +43,31 @@ public class RightWing extends Agent {
 		}
 	}
 
+	private void runToSlot() {
+		String target = world.isRightSide() ? "f p l t" : "f p r b";
+		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
+			if (Math.abs(world.getAngleToObject(target)) > 10) {
+				turn(world.getAngleToObject(target));
+			} else {
+				if (world.getDistanceToObject(target) < 5) {
+					turn(45);
+				} else {
+					dash(50, world.getAngleToObject(target));
+				}
+			}
+		} else {
+			turn(45);
+		}
+	}
+
 	private boolean tryToKick() {
-		if (world.getDistToBall() < Double.parseDouble(world.getServerParam("kickable_margin"))) {
-			System.out.println("Kicking, angle to goal is "+world.getAngleToEnemyGoal());
-			System.out.println("LOOOOOOOL");
-			kick(100, world.getAngleToEnemyGoal());
+		if (world.getDistToBall() < Double.parseDouble(world
+				.getServerParam("kickable_margin"))) {
+			if (canSeeEnemyGoal()) {
+				kick(100, world.getAngleToEnemyGoal());
+			} else {
+				turn(45);
+			}
 			return true;
 		} else {
 			return false;
