@@ -36,6 +36,16 @@ public final class Constants {
 		public static final double ENEMY_KICKOFF_X = -10;
 		public static final double ENEMY_KICKOFF_Y = 0;
 	}
+	
+
+	public static final class RightWing {
+		public static final double START_X = -10;
+		public static final double START_Y = 10;
+		public static final double FRIENDLY_KICKOFF_X = -1;
+		public static final double FRIENDLY_KICKOFF_Y = 10;
+		public static final double ENEMY_KICKOFF_X = -10;
+		public static final double ENEMY_KICKOFF_Y = 10;
+	}
 
 	public static final class Goalie {
 		public static final int START_X = 1;
