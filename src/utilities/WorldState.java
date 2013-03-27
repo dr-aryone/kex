@@ -7,6 +7,8 @@ public class WorldState {
 	public static final int ENEMY_KICK_OFF = 2;
 	public static final int FRIENDLY_KICK_OFF = 3;
 	public static final int BEFORE_KICK_OFF = 4;
+	public static final int FRIENDLY_FREE_KICK = 5;
+	public static final int ENEMY_FREE_KICK = 6;
 	private boolean isLeftSide;
 	private HashMap<String, Integer> lastSeen = new HashMap<String, Integer>();
 	private HashMap<String, Integer> angleToObjects = new HashMap<String, Integer>();

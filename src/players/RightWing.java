@@ -3,14 +3,14 @@ package players;
 import utilities.Constants;
 import utilities.WorldState;
 
-public class CenterForward extends Agent {
+public class RightWing extends Agent {
 
 	public static void main(String[] args) {
 		new RightWing();
 	}
 
-	public CenterForward() {
-		super(Constants.Team.CENTER_FORWARD);
+	public RightWing() {
+		super(Constants.Team.RIGHT_WING);
 	}
 
 	@Override
@@ -18,9 +18,6 @@ public class CenterForward extends Agent {
 		while (true) {
 			if (world.hasNewData()) {
 				switch (world.getState()) {
-				case WorldState.FRIENDLY_KICK_OFF:
-					kick(40, 95);
-					break;
 				case WorldState.PLAY_ON:
 					if (canSeeBall()) {
 						if(!tryToKick()) {
@@ -48,13 +45,8 @@ public class CenterForward extends Agent {
 
 	private boolean tryToKick() {
 		if (world.getDistToBall() < Double.parseDouble(world.getServerParam("kickable_margin"))) {
-			if(canSeeEnemyGoal()) {
-				System.out.println("KICKKUUUUUUUUUUU");
-				kick(100, world.getAngleToEnemyGoal());
-			} else {
-				System.out.println("TURNUUUUUUUUUUUU");
-				turn(45);
-			}
+			System.out.println("Kicking, angle to goal is "+world.getAngleToEnemyGoal());
+			kick(100, world.getAngleToEnemyGoal());
 			return true;
 		} else {
 			return false;
