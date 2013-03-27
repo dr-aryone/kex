@@ -91,6 +91,9 @@ public abstract class Agent implements TimeListener {
 						Constants.CenterForward.FRIENDLY_KICKOFF_Y);
 				break;
 			case Constants.Team.RIGHT_WING:
+				move(Constants.RightWing.FRIENDLY_KICKOFF_X,
+						Constants.RightWing.FRIENDLY_KICKOFF_Y);
+				break;
 			}
 			hasMoved = true;
 		}
@@ -143,9 +146,6 @@ public abstract class Agent implements TimeListener {
 				newAngle = 360 + newAngle;
 			}
 			angleToObjects.put(key, newAngle);
-			if(key.equals("b")) {
-				System.out.println("BOLLEEEEEEEEEEEEEN pre: "+ previousAngle + "new: " + newAngle);
-			}
 		}
 	}
 
