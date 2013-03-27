@@ -6,7 +6,7 @@ import utilities.WorldState;
 public class CenterForward extends Agent {
 
 	public static void main(String[] args) {
-		new RightWing();
+		new CenterForward();
 	}
 
 	public CenterForward() {
@@ -50,6 +50,7 @@ public class CenterForward extends Agent {
 		if (world.getDistToBall() < Double.parseDouble(world.getServerParam("kickable_margin"))) {
 			if(canSeeEnemyGoal()) {
 				System.out.println("KICKKUUUUUUUUUUU");
+				System.out.println("fitteclipse");
 				kick(100, world.getAngleToEnemyGoal());
 			} else {
 				System.out.println("TURNUUUUUUUUUUUU");

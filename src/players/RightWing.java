@@ -46,6 +46,7 @@ public class RightWing extends Agent {
 	private boolean tryToKick() {
 		if (world.getDistToBall() < Double.parseDouble(world.getServerParam("kickable_margin"))) {
 			System.out.println("Kicking, angle to goal is "+world.getAngleToEnemyGoal());
+			System.out.println("LOOOOOOOL");
 			kick(100, world.getAngleToEnemyGoal());
 			return true;
 		} else {

@@ -101,6 +101,7 @@ public abstract class Agent implements TimeListener {
 	}
 
 	public boolean canSeeEnemyGoal() {
+		System.out.println("ANGLE: "+world.getAngleToEnemyGoal()+"UNDEF :"+Constants.Params.NOT_DEFINED);
 		return world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED;
 	}
 
