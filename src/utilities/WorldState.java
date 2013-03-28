@@ -157,9 +157,9 @@ public class WorldState {
 
 	public boolean isPositionValid(int timeSinceLastSeen, String object, boolean isRightSide) {
 		if((object.contains("g r") && isRightSide) || (object.contains("g l") && isLeftSide())) {
-			return timeSinceLastSeen < 100;
+			return timeSinceLastSeen < Constants.Params.FRIENDLY_GOAL_INVALIDATE_TIME;
 		} else {
-			return timeSinceLastSeen < 5;
+			return timeSinceLastSeen < Constants.Params.DEFAULT_INVALIDATE_TIME;
 		}
 	}
 
