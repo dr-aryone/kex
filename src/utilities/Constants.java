@@ -66,5 +66,6 @@ public final class Constants {
 	public static final class Goalie {
 		public static final int START_X = -50;
 		public static final int START_Y = 0;
+		public static final int MIN_DIST_TO_PENALTY_AREA_LINE = 10;
 	}
 }

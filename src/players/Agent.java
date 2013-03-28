@@ -107,10 +107,8 @@ public abstract class Agent implements TimeListener {
 	public boolean canSeeFriendlyGoal() {
 		boolean canSeeGoalFlag = world.getAngleToFriendlyGoal() != Constants.Params.NOT_DEFINED;
 		String side = world.isRightSide() ? "r" : "l";
-		boolean canSeeGoalPost1 = world.getAngleToObject("f g " + side + " b") != Constants.Params.NOT_DEFINED;
-		boolean canSeeGoalPost2 = world.getAngleToObject("f g " + side + " t") != Constants.Params.NOT_DEFINED;
-		System.out.println("POST 1 2" + canSeeGoalFlag + canSeeGoalPost1
-				+ canSeeGoalPost2);
+		boolean canSeeGoalPost1 = world.getAngleToObject("f g "+ side +" b") != Constants.Params.NOT_DEFINED; 
+		boolean canSeeGoalPost2 = world.getAngleToObject("f g "+ side +" t") != Constants.Params.NOT_DEFINED;
 		return canSeeGoalFlag && canSeeGoalPost1 && canSeeGoalPost2;
 	}
 
