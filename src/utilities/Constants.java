@@ -73,4 +73,12 @@ public final class Constants {
 		public static final int MIN_DIST_TO_PENALTY_AREA_LINE = 3;
 		public static final int MIN_DIST_TO_CENTER = 37;
 	}
+	
+	public static final class InnerRightDefender {
+		
+	}
+	
+public static final class InnerLeftDefender {
+		
+	}
 }
