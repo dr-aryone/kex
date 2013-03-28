@@ -83,7 +83,7 @@ public class InnerRightDefender extends Agent {
 	}
 
 	private void runToSlot() {
-		String target = world.isRightSide() ? "f p r b" : "f p l b";
+		String target = world.isRightSide() ? "f p r t" : "f p l b";
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
 			if (Math.abs(world.getAngleToObject(target)) > 10) {
 				turn(world.getAngleToObject(target));
