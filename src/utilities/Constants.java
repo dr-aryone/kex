@@ -31,6 +31,7 @@ public final class Constants {
 		public static final int FORWARD_PASSING_ANGLE = 30;
 		public static final double FORWARD_PASSING_DISTANCE = 10;
 		public static final double CLOSE_TO_EDGE = 10;
+		public static final int CLOSE_ANGLE = 10;
 	}
 
 	public static final class CenterForward {

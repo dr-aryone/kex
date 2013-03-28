@@ -107,12 +107,13 @@ public abstract class Agent implements TimeListener {
 	public boolean canSeeFriendlyGoal() {
 		boolean canSeeGoalFlag = world.getAngleToFriendlyGoal() != Constants.Params.NOT_DEFINED;
 		String side = world.isRightSide() ? "r" : "l";
-		boolean canSeeGoalPost1 = world.getAngleToObject("f g "+ side +" b") != Constants.Params.NOT_DEFINED; 
-		boolean canSeeGoalPost2 = world.getAngleToObject("f g "+ side +" t") != Constants.Params.NOT_DEFINED;
-		System.out.println("POST 1 2"+ canSeeGoalFlag + canSeeGoalPost1 + canSeeGoalPost2);
+		boolean canSeeGoalPost1 = world.getAngleToObject("f g " + side + " b") != Constants.Params.NOT_DEFINED;
+		boolean canSeeGoalPost2 = world.getAngleToObject("f g " + side + " t") != Constants.Params.NOT_DEFINED;
+		System.out.println("POST 1 2" + canSeeGoalFlag + canSeeGoalPost1
+				+ canSeeGoalPost2);
 		return canSeeGoalFlag && canSeeGoalPost1 && canSeeGoalPost2;
 	}
-	
+
 	public boolean canSeeBall() {
 		return world.getAngleToBall() != Constants.Params.NOT_DEFINED;
 	}
@@ -217,25 +218,62 @@ public abstract class Agent implements TimeListener {
 	}
 
 	public void passForward(String target) {
-		System.out.println("PASSING "+target);
+		System.out.println("PASSING " + target);
 		kick(getPassingPower(world.getDistanceToObject(target)),
 				world.getAngleToObject(target));
 	}
-	
+
 	public void dribble() {
-		if(canSeeEnemyGoal()) {
-			kick(Constants.Params.DRIBBLING_KICK_POWER, world.getAngleToEnemyGoal());
+		if (canSeeEnemyGoal()) {
+			kick(Constants.Params.DRIBBLING_KICK_POWER,
+					world.getAngleToEnemyGoal());
 		} else {
-			String rightLine = world.isLeftSide() ? "l b" : "l t";
-			String leftLine = world.isLeftSide() ? "l t" : "l b";
 			int angle = 0;
-			if (world.getDistanceToObject(rightLine) < Constants.Params.CLOSE_TO_EDGE) {
-				angle = world.isLeftSide() ? -90 : 90;
-			} else if (world.getDistanceToObject(leftLine) < Constants.Params.CLOSE_TO_EDGE){
-				angle = world.isLeftSide() ? 90 : -90;
+			if (isLookingBack()) {
+				angle = 180;
+			} else if (isLookingLeft()) {
+				angle = 100;
+			} else if (isLookingRight()) {
+				angle = -100;
 			}
 			kick(Constants.Params.DRIBBLING_KICK_POWER, angle);
 		}
+	}
+
+	private boolean isLookingBack() {
+		String[] leftFlags = { "f l b 10", "f l b 20", "f l b 30", "f l t 10", "f l t 20", "f l t 30"};
+		String[] rightFlags = { "f r b 10", "f r b 20", "f r b 30", "f r t 10", "f r t 20", "f r t 30"};
+		String[] behindFlags = world.isLeftSide() ? leftFlags : rightFlags;
+		for (String flag : behindFlags) {
+			if (world.getAngleToObject(flag) < Constants.Params.CLOSE_ANGLE) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isLookingLeft() {
+		String[] topFlags = {"f t l 10", "f t l 30", "f t l 50", "f t 0", "f t r 10", "f t r 30", "f t r 50"};
+		String[] bottomFlags = {"f b l 10", "f b l 30", "f b l 50", "f b 0", "f b r 10", "f b r 30", "f b r 50"};
+		String[] leftFlags = world.isLeftSide() ? topFlags : bottomFlags;
+		for (String flag : leftFlags) {
+			if (world.getAngleToObject(flag) < Constants.Params.CLOSE_ANGLE) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isLookingRight() {
+		String[] topFlags = {"f t l 10", "f t l 30", "f t l 50", "f t 0", "f t r 10", "f t r 30", "f t r 50"};
+		String[] bottomFlags = {"f b l 10", "f b l 30", "f b l 50", "f b 0", "f b r 10", "f b r 30", "f b r 50"};
+		String[] rightFlags = world.isRightSide() ? topFlags : bottomFlags;
+		for (String flag : rightFlags) {
+			if (world.getAngleToObject(flag) < Constants.Params.CLOSE_ANGLE) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void sendMessage(String message) {
