@@ -33,6 +33,8 @@ public final class Constants {
 		public static final double CLOSE_TO_EDGE = 10;
 		public static final int CLOSE_ANGLE = 10;
 		public static final double TAKE_BALL_DISTANCE = 10;
+		public static final int FRIENDLY_GOAL_INVALIDATE_TIME = 25;
+		public static final int DEFAULT_INVALIDATE_TIME = 5;
 		public static final int JOGGING_SPEED = 75;
 	}
 
@@ -68,6 +70,7 @@ public final class Constants {
 	public static final class Goalie {
 		public static final int START_X = -50;
 		public static final int START_Y = 0;
-		public static final int MIN_DIST_TO_PENALTY_AREA_LINE = 10;
+		public static final int MIN_DIST_TO_PENALTY_AREA_LINE = 3;
+		public static final int MIN_DIST_TO_CENTER = 37;
 	}
 }

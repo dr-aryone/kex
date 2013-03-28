@@ -27,7 +27,17 @@ public class Goalie extends Agent {
 						if(target != null) {
 							passForward(target);
 						} else {
-							kick(100, 0);
+							if(canSeeEnemyGoal()) {
+								kick(100, world.getAngleToEnemyGoal());
+							} else if(isLookingBack()) {
+								kick(100, 180);
+							} else if(isLookingLeft()){
+								kick(100, 90);
+							} else if(isLookingRight()){
+								kick(100, -90);
+							} else {
+								kick(100, 0);
+							}
 						}
 					}
 				default:
@@ -52,12 +62,8 @@ public class Goalie extends Agent {
 	}
 
 	public void dash(int power, double direction) {
-		double dist1 = world.getDistanceToObject("f p "+world.getSideChar()+" t");
-		double dist2 = world.getDistanceToObject("f p "+world.getSideChar()+" c");
-		double dist3 = world.getDistanceToObject("f p "+world.getSideChar()+" b");
-		double min = Math.min(dist1, dist2);
-		min = Math.min(dist3, min);
-		if(min < Constants.Goalie.MIN_DIST_TO_PENALTY_AREA_LINE) {
+		double distToCenter = world.getDistanceToObject("f c");
+		if(distToCenter < Constants.Goalie.MIN_DIST_TO_CENTER) {
 			returnToGoal();
 		} else {
 			super.dash(power, direction);
