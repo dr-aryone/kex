@@ -3,16 +3,16 @@ package players;
 import utilities.Constants;
 import utilities.WorldState;
 
-public class LeftWing extends Agent {
+public class MidMid extends Agent {
 
 	public static void main(String[] args) {
-		new LeftWing();
+		new MidMid();
 	}
 
 	private int notLookedAroundSince;
 
-	public LeftWing() {
-		super(Constants.Team.LEFT_WING);
+	public MidMid() {
+		super(Constants.Team.MID_MID);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class LeftWing extends Agent {
 	}
 
 	private void playLogic() {
-		if (canSeeBall() && world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE) {
+		if (canSeeBall() && world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE*1.5) {
 			if (world.getDistToBall() < Double.parseDouble(world
 					.getServerParam("kickable_margin"))) {
 				String passTarget = getPassTarget();
@@ -75,7 +75,6 @@ public class LeftWing extends Agent {
 			runToSlot();
 		}
 	}
-
 	private void tryToScore() {
 
 		if (canSeeEnemyGoal()) {
@@ -92,7 +91,7 @@ public class LeftWing extends Agent {
 			return;
 		}
 		notLookedAroundSince++;
-		String target = world.isRightSide() ? "f p l b" : "f p r t";
+		String target = "f c";
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
 			if (Math.abs(world.getAngleToObject(target)) > 10) {
 				turn(world.getAngleToObject(target));
@@ -107,4 +106,5 @@ public class LeftWing extends Agent {
 			turn(45);
 		}
 	}
+
 }

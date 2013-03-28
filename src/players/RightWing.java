@@ -9,6 +9,8 @@ public class RightWing extends Agent {
 		new RightWing();
 	}
 
+	private int notLookedAroundSince;
+
 	public RightWing() {
 		super(Constants.Team.RIGHT_WING);
 	}
@@ -83,7 +85,12 @@ public class RightWing extends Agent {
 	}
 
 	private void runToSlot() {
-		
+		if(notLookedAroundSince > 20) {
+			turn(180);
+			notLookedAroundSince = 0;
+			return;
+		}
+		notLookedAroundSince++;
 		String target = world.isRightSide() ? "f p l t" : "f p r b";
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
 			if (Math.abs(world.getAngleToObject(target)) > 10) {

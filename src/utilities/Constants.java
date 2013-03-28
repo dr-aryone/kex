@@ -10,7 +10,7 @@ public final class Constants {
 	}
 
 	public static final class Team {
-		public static final String NAME = "meinkemakers";
+		public static final String NAME = "meinkemakers2";
 		public static final int GOALIE = 1;
 		public static final int OUTER_RIGHT_DEFENDER = 2;
 		public static final int INNER_RIGHT_DEFENDER = 3;
@@ -27,20 +27,18 @@ public final class Constants {
 	public static final class Params {
 		public static final int NOT_DEFINED = Integer.MAX_VALUE;
 		public static final double SCORING_DISTANCE = 25;
-		public static final int DRIBBLING_KICK_POWER = 50;
+		public static final int DRIBBLING_KICK_POWER = 40;
 		public static final int FORWARD_PASSING_ANGLE = 30;
 		public static final double FORWARD_PASSING_DISTANCE = 5;
 		public static final double CLOSE_TO_EDGE = 10;
 		public static final int CLOSE_ANGLE = 10;
-		public static final double TAKE_BALL_DISTANCE = 10;
+		public static final double TAKE_BALL_DISTANCE = 12;
 		public static final int FRIENDLY_GOAL_INVALIDATE_TIME = 25;
 		public static final int DEFAULT_INVALIDATE_TIME = 5;
 		public static final int JOGGING_SPEED = 75;
 	}
 
 	public static final class CenterForward {
-		public static final double START_X = -10;
-		public static final double START_Y = 0;
 		public static final double FRIENDLY_KICKOFF_X = 0;
 		public static final double FRIENDLY_KICKOFF_Y = -0.5;
 		public static final double ENEMY_KICKOFF_X = -10;
@@ -49,8 +47,6 @@ public final class Constants {
 	
 
 	public static final class RightWing {
-		public static final double START_X = -10;
-		public static final double START_Y = 10;
 		public static final double FRIENDLY_KICKOFF_X = -1;
 		public static final double FRIENDLY_KICKOFF_Y = 10;
 		public static final double ENEMY_KICKOFF_X = -10;
@@ -59,8 +55,6 @@ public final class Constants {
 	
 
 	public static final class LeftWing {
-		public static final double START_X = -10;
-		public static final double START_Y = -10;
 		public static final double FRIENDLY_KICKOFF_X = -1;
 		public static final double FRIENDLY_KICKOFF_Y = -10;
 		public static final double ENEMY_KICKOFF_X = -10;
