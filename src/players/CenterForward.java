@@ -19,16 +19,10 @@ public class CenterForward extends Agent {
 			if (world.hasNewData()) {
 				switch (world.getState()) {
 				case WorldState.FRIENDLY_KICK_OFF:
-					kick(40, 95);
+					kick(70, 95);
 					break;
 				case WorldState.PLAY_ON:
-					if (canSeeBall()) {
-						if(!tryToKick()) {
-							runToBall();
-						}
-					} else {
-						turn(45);
-					}
+					playLogic();
 					break;
 				case WorldState.BEFORE_KICK_OFF:
 					moveFriendlyKickoff();
@@ -46,16 +40,32 @@ public class CenterForward extends Agent {
 		}
 	}
 
-	private boolean tryToKick() {
-		if (world.getDistToBall() < Double.parseDouble(world.getServerParam("kickable_margin"))) {
-			if(canSeeEnemyGoal()) {
-				kick(100, world.getAngleToEnemyGoal());
+	private void playLogic() {
+		if (canSeeBall()) {
+			if (world.getDistToBall() < Double.parseDouble(world
+					.getServerParam("kickable_margin"))) {
+				String passTarget = getPassTarget();
+				if (world.getDistToEnemyGoal() < Constants.Params.SCORING_DISTANCE) {
+					tryToScore();
+				} else if (passTarget != null){
+					passForward(passTarget);
+				} else {
+					dribble();
+				}
 			} else {
-				turn(45);
+				runToBall();
 			}
-			return true;
 		} else {
-			return false;
+			turn(45);
+		}
+	}
+
+	private void tryToScore() {
+
+		if (canSeeEnemyGoal()) {
+			kick(100, world.getAngleToEnemyGoal());
+		} else {
+			turn(45);
 		}
 	}
 }

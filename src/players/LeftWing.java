@@ -3,14 +3,14 @@ package players;
 import utilities.Constants;
 import utilities.WorldState;
 
-public class RightWing extends Agent {
+public class LeftWing extends Agent {
 
 	public static void main(String[] args) {
-		new RightWing();
+		new LeftWing();
 	}
 
-	public RightWing() {
-		super(Constants.Team.RIGHT_WING);
+	public LeftWing() {
+		super(Constants.Team.LEFT_WING);
 	}
 
 	@Override
@@ -19,7 +19,6 @@ public class RightWing extends Agent {
 			if (world.hasNewData()) {
 				switch (world.getState()) {
 				case WorldState.PLAY_ON:
-					
 					if (canSeeBall() && world.getDistToBall() < 20) {
 						if (!tryToKick()) {
 							runToBall();
@@ -45,7 +44,7 @@ public class RightWing extends Agent {
 	}
 
 	private void runToSlot() {
-		String target = world.isRightSide() ? "f p l t" : "f p r b";
+		String target = world.isRightSide() ? "f p r t" : "f p l b";
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
 			if (Math.abs(world.getAngleToObject(target)) > 10) {
 				turn(world.getAngleToObject(target));

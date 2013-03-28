@@ -25,8 +25,8 @@ public abstract class Agent implements TimeListener {
 	private Parser parser;
 	private boolean goalie;
 	private int role;
-	private boolean hasMoved;
 	protected Queue<String> queue;
+	private boolean hasMoved;
 
 	public Agent(int role) {
 		if (role == Constants.Team.GOALIE) {
@@ -70,32 +70,37 @@ public abstract class Agent implements TimeListener {
 	}
 
 	public void moveFriendlyKickoff() {
-		if (!hasMoved) {
-			if (world.isRightSide()) {
-				turn(180);
-			}
-			switch (role) {
-			case Constants.Team.GOALIE:
-				move(-50, 0);
-				break;
-			case Constants.Team.OUTER_LEFT_DEFENDER:
-			case Constants.Team.INNER_LEFT_DEFENDER:
-			case Constants.Team.INNER_RIGHT_DEFENDER:
-			case Constants.Team.OUTER_RIGHT_DEFENDER:
-			case Constants.Team.RIGHT_MID:
-			case Constants.Team.MID_MID:
-			case Constants.Team.LEFT_MID:
-			case Constants.Team.LEFT_WING:
-			case Constants.Team.CENTER_FORWARD:
-				move(Constants.CenterForward.FRIENDLY_KICKOFF_X,
-						Constants.CenterForward.FRIENDLY_KICKOFF_Y);
-				break;
-			case Constants.Team.RIGHT_WING:
-				move(Constants.RightWing.FRIENDLY_KICKOFF_X,
-						Constants.RightWing.FRIENDLY_KICKOFF_Y);
-				break;
-			}
-			hasMoved = true;
+		if (hasMoved)
+			return;
+		hasMoved = true;
+		int mult = 1;
+		if (world.isRightSide()) {
+			turn(180);
+			mult = -1;
+		}
+		switch (role) {
+		case Constants.Team.GOALIE:
+			move(-50, 0);
+			break;
+		case Constants.Team.OUTER_LEFT_DEFENDER:
+		case Constants.Team.INNER_LEFT_DEFENDER:
+		case Constants.Team.INNER_RIGHT_DEFENDER:
+		case Constants.Team.OUTER_RIGHT_DEFENDER:
+		case Constants.Team.RIGHT_MID:
+		case Constants.Team.MID_MID:
+		case Constants.Team.LEFT_MID:
+		case Constants.Team.LEFT_WING:
+			move(Constants.LeftWing.FRIENDLY_KICKOFF_X, mult
+					* Constants.LeftWing.FRIENDLY_KICKOFF_Y);
+			break;
+		case Constants.Team.CENTER_FORWARD:
+			move(Constants.CenterForward.FRIENDLY_KICKOFF_X, mult
+					* Constants.CenterForward.FRIENDLY_KICKOFF_Y);
+			break;
+		case Constants.Team.RIGHT_WING:
+			move(Constants.RightWing.FRIENDLY_KICKOFF_X, mult
+					* Constants.RightWing.FRIENDLY_KICKOFF_Y);
+			break;
 		}
 	}
 
@@ -179,8 +184,61 @@ public abstract class Agent implements TimeListener {
 		}
 	}
 
+	/**
+	 * @return target name if there is any, null otherwise
+	 */
+	public String getPassTarget() {
+		int enemyGoalAngle = world.getAngleToEnemyGoal();
+		String target = null;
+		String currTarget = "";
+		if (canSeeEnemyGoal()) {
+			for (int i = 1; i <= 11; i++) {
+				currTarget = "p \"" + Constants.Team.NAME + "\" " + i;
+				int angle = world.getAngleToObject(currTarget);
+				if (angle == Constants.Params.NOT_DEFINED)
+					continue;
+				double distance = world.getDistanceToObject(currTarget);
+				if (Math.abs(angle - enemyGoalAngle) < Constants.Params.FORWARD_PASSING_ANGLE) {
+					if (distance > Constants.Params.FORWARD_PASSING_DISTANCE) {
+						if (target != null
+								&& world.getDistanceToObject(target) < distance) {
+							target = currTarget;
+						}
+					}
+				}
+			}
+		}
+		return target;
+	}
+
+	private int getPassingPower(double distance) {
+		int power = (int) (60 + distance * 2);
+		return Math.min(power, 100);
+	}
+
+	public void passForward(String target) {
+		System.out.println("PASSING "+target);
+		kick(getPassingPower(world.getDistanceToObject(target)),
+				world.getAngleToObject(target));
+	}
+	
+	public void dribble() {
+		if(canSeeEnemyGoal()) {
+			kick(Constants.Params.DRIBBLING_KICK_POWER, world.getAngleToEnemyGoal());
+		} else {
+			String rightLine = world.isLeftSide() ? "l b" : "l t";
+			String leftLine = world.isLeftSide() ? "l t" : "l b";
+			int angle = 0;
+			if (world.getDistanceToObject(rightLine) < Constants.Params.CLOSE_TO_EDGE) {
+				angle = world.isLeftSide() ? -90 : 90;
+			} else if (world.getDistanceToObject(leftLine) < Constants.Params.CLOSE_TO_EDGE){
+				angle = world.isLeftSide() ? 90 : -90;
+			}
+			kick(Constants.Params.DRIBBLING_KICK_POWER, angle);
+		}
+	}
+
 	private void sendMessage(String message) {
-		System.out.println(message); 	
 		message += "\u0000";
 		byte[] buf = message.getBytes();
 		DatagramPacket msg = new DatagramPacket(buf, buf.length,
@@ -191,5 +249,5 @@ public abstract class Agent implements TimeListener {
 			System.err.println("IOException");
 		}
 	}
-	
+
 }

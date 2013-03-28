@@ -40,8 +40,8 @@ public class Parser extends Thread {
 		String command = message.substring(1, firstSpace);
 		message = message.substring(firstSpace, message.length() - 1).trim();
 		if (command.equals("see")) {
-			parseSee(message);
 			System.out.println(message);
+			parseSee(message);
 			world.newData();
 		} else if (command.equals("sense_body")) {
 
