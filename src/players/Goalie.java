@@ -21,6 +21,7 @@ public class Goalie extends Agent {
 				case WorldState.BEFORE_KICK_OFF:
 					moveFriendlyKickoff();
 					break;
+				case WorldState.FRIENDLY_GOAL_KICK:
 				case WorldState.FRIENDLY_FREE_KICK:
 					if(world.getDistToBall() < 2) {
 						String target = getPassTarget();
@@ -40,6 +41,7 @@ public class Goalie extends Agent {
 							}
 						}
 					}
+					break;
 				default:
 					if (world.getDistToBall() < 1.5) {
 						catchTheBall();
@@ -48,6 +50,7 @@ public class Goalie extends Agent {
 					} else {
 						alignToBall();
 					}
+					break;
 				}
 				world.dataProcessed();
 			} else {
@@ -96,8 +99,7 @@ public class Goalie extends Agent {
 
 	private void returnToGoal() {
 		if (world.getAngleToFriendlyGoal() != Constants.Params.NOT_DEFINED) {
-			if (Math.abs(world.getAngleToFriendlyGoal()) > 10
-					&& world.getDistToFriendlyGoal() > 5) {
+			if (Math.abs(world.getAngleToFriendlyGoal()) > 10 && world.getDistToFriendlyGoal() > 5) {
 				turn(world.getAngleToFriendlyGoal());
 			} else if (world.getDistToFriendlyGoal() > 5) {
 				super.dash(100, world.getAngleToFriendlyGoal());
