@@ -83,9 +83,6 @@ public class WorldState {
 	}
 
 	public void angleToObject(String object, int angle) {
-		if(object.equals("b")) {
-			System.out.println("I SEE BALLZ AT ANGLE: "+angle);
-		}
 		angleToObjects.put(object, angle);
 	}
 
@@ -146,7 +143,7 @@ public class WorldState {
 		return state;
 	}
 
-	public double getAngleToEnemyGoal() {
+	public int getAngleToEnemyGoal() {
 		if (isLeftSide()) {
 			return getAngleToObject("g r");
 		} else {
