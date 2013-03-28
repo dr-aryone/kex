@@ -66,6 +66,8 @@ public class LeftWing extends Agent {
 				} else {
 					dribble();
 				}
+			} else {
+				runToBall();
 			}
 		} else {
 			runToSlot();
