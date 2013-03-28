@@ -45,7 +45,6 @@ public class Parser extends Thread {
 		} else if (command.equals("sense_body")) {
 
 		} else if (command.equals("hear")) {
-			System.out.println(message);
 			parseAural(message);
 		} else if (command.equals("fullstate")) {
 

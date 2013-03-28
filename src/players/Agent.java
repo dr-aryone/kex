@@ -80,7 +80,7 @@ public abstract class Agent implements TimeListener {
 		}
 		switch (role) {
 		case Constants.Team.GOALIE:
-			move(-50, 0);
+			move(Constants.Goalie.START_X, Constants.Goalie.START_Y);
 			break;
 		case Constants.Team.OUTER_LEFT_DEFENDER:
 		case Constants.Team.INNER_LEFT_DEFENDER:
@@ -107,8 +107,8 @@ public abstract class Agent implements TimeListener {
 	public boolean canSeeFriendlyGoal() {
 		boolean canSeeGoalFlag = world.getAngleToFriendlyGoal() != Constants.Params.NOT_DEFINED;
 		String side = world.isRightSide() ? "r" : "l";
-		boolean canSeeGoalPost1 = world.getAngleToObject("f g "+ side +" b") != Constants.Params.NOT_DEFINED; 
-		boolean canSeeGoalPost2 = world.getAngleToObject("f g "+ side +" t") != Constants.Params.NOT_DEFINED;
+		boolean canSeeGoalPost1 = world.getAngleToObject("f g " + side + " b") != Constants.Params.NOT_DEFINED;
+		boolean canSeeGoalPost2 = world.getAngleToObject("f g " + side + " t") != Constants.Params.NOT_DEFINED;
 		return canSeeGoalFlag && canSeeGoalPost1 && canSeeGoalPost2;
 	}
 
@@ -189,22 +189,23 @@ public abstract class Agent implements TimeListener {
 	public String getPassTarget() {
 		int enemyGoalAngle = world.getAngleToEnemyGoal();
 		String target = null;
-		String currTarget = "";
-		if (canSeeEnemyGoal()) {
-			for (int i = 1; i <= 11; i++) {
-				currTarget = "p \"" + Constants.Team.NAME + "\" " + i;
+		String currTarget = "p \"" + Constants.Team.NAME + "\"";
+		if (!isLookingBack()) {
+			for (int i = 1; i <= 12; i++) {
 				int angle = world.getAngleToObject(currTarget);
 				if (angle == Constants.Params.NOT_DEFINED)
 					continue;
 				double distance = world.getDistanceToObject(currTarget);
-				if (Math.abs(angle - enemyGoalAngle) < Constants.Params.FORWARD_PASSING_ANGLE) {
+				if (Math.abs(angle) < Constants.Params.FORWARD_PASSING_ANGLE
+						|| Math.abs(angle - enemyGoalAngle) < Constants.Params.FORWARD_PASSING_ANGLE) {
 					if (distance > Constants.Params.FORWARD_PASSING_DISTANCE) {
-						if (target != null
-								&& world.getDistanceToObject(target) < distance) {
+						if (target == null
+								|| world.getDistanceToObject(target) < distance) {
 							target = currTarget;
 						}
 					}
 				}
+				currTarget = "p \"" + Constants.Team.NAME + "\" " + i;
 			}
 		}
 		return target;
