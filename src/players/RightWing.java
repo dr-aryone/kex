@@ -66,6 +66,8 @@ public class RightWing extends Agent {
 				} else {
 					dribble();
 				}
+			} else {
+				runToBall();
 			}
 		} else {
 			runToSlot();
@@ -81,6 +83,7 @@ public class RightWing extends Agent {
 	}
 
 	private void runToSlot() {
+		
 		String target = world.isRightSide() ? "f p l t" : "f p r b";
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
 			if (Math.abs(world.getAngleToObject(target)) > 10) {

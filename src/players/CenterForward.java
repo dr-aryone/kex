@@ -72,7 +72,6 @@ public class CenterForward extends Agent {
 			if (world.getDistToBall() < Double.parseDouble(world
 					.getServerParam("kickable_margin"))) {
 				String passTarget = getPassTarget();
-				System.out.println(passTarget);
 				if (world.getDistToEnemyGoal() < Constants.Params.SCORING_DISTANCE) {
 					tryToScore();
 				} else if (passTarget != null) {
