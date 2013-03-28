@@ -43,13 +43,15 @@ public class Goalie extends Agent {
 	}
 
 	private void alignToBall() {
-		if (!canSeeBall()) {
+		if(!canSeeFriendlyGoal()) {
+			System.out.println("WHEREZ DA GOAL????");
+			turn(45);
+		} else if (!canSeeBall() || world.getDistToBall() > 50) {
 			returnToGoal();
 		} else {
-			if (Math.abs(world.getAngleToBall()) > 10) {
+			if (Math.abs(world.getAngleToBall()) > 20) {
 				turn(world.getAngleToBall());
-			} else if (world.getAngleToFriendlyGoal() > 0) { // gå mot höger
-																// stolpe
+			} else if (world.getAngleToFriendlyGoal() > 0) { // gå mot höger stolpe
 				if (world.isRightSide()) {
 					dash(10, world.getAngleToObject("f g r t"));
 				} else {
@@ -57,9 +59,9 @@ public class Goalie extends Agent {
 				}
 			} else { // gå mot vänster stolpe
 				if (world.isRightSide()) {
-					dash(10, world.getAngleToObject("flag g r b"));
+					dash(10, world.getAngleToObject("f g r b"));
 				} else {
-					dash(10, world.getAngleToObject("flag g l t"));
+					dash(10, world.getAngleToObject("f g l t"));
 				}
 			}
 		}

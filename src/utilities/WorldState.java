@@ -37,8 +37,8 @@ public class WorldState {
 		if(time == null) {
 			return Constants.Params.NOT_DEFINED;
 		}
-
-		if(getCurrentTime() - time > 5) {
+		int timeSinceLastSeen = getCurrentTime() - time;
+		if(!isPositionValid(timeSinceLastSeen, key, isRightSide())) {
 			return Constants.Params.NOT_DEFINED;
 		}
 		
@@ -55,8 +55,8 @@ public class WorldState {
 		if(time == null) {
 			return Constants.Params.NOT_DEFINED;
 		}
-		
-		if(getCurrentTime() - time > 5) {
+		int timeSinceLastSeen = getCurrentTime() - time;
+		if(!isPositionValid(timeSinceLastSeen, key, isRightSide())) {
 			return Constants.Params.NOT_DEFINED;
 		}
 		return dist;
@@ -154,6 +154,13 @@ public class WorldState {
 		}
 	}
 
+	public boolean isPositionValid(int timeSinceLastSeen, String object, boolean isRightSide) {
+		if((object.contains("g r") && isRightSide) || (object.contains("g l") && isLeftSide())) {
+			return timeSinceLastSeen < 100;
+		} else {
+			return timeSinceLastSeen < 5;
+		}
+	}
 
 
 	public boolean isRightSide() {
