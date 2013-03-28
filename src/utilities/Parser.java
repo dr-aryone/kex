@@ -25,7 +25,7 @@ public class Parser extends Thread {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			if(!hasBeenInit) {
+			if (!hasBeenInit) {
 				Constants.Server.PORT = p.getPort();
 				Constants.Server.IP = p.getAddress();
 				hasBeenInit = true;
@@ -40,12 +40,12 @@ public class Parser extends Thread {
 		String command = message.substring(1, firstSpace);
 		message = message.substring(firstSpace, message.length() - 1).trim();
 		if (command.equals("see")) {
-			System.out.println(message);
 			parseSee(message);
 			world.newData();
 		} else if (command.equals("sense_body")) {
 
 		} else if (command.equals("hear")) {
+			System.out.println(message);
 			parseAural(message);
 		} else if (command.equals("fullstate")) {
 
@@ -112,7 +112,43 @@ public class Parser extends Thread {
 			}
 		} else if (message.contains("play_on")) {
 			world.setState(WorldState.PLAY_ON);
-		} else if (message.contains("before_kick_off")) {
+		} else if (message.contains("kick_in_l")) {
+			if (world.isRightSide()) {
+				world.setState(WorldState.ENEMY_KICK_IN);
+			} else {
+				world.setState(WorldState.FRIENDLY_KICK_IN);
+			}
+		} else if (message.contains("kick_in_r")) {
+			if (world.isLeftSide()) {
+				world.setState(WorldState.ENEMY_KICK_IN);
+			} else {
+				world.setState(WorldState.FRIENDLY_KICK_IN);
+			}
+		} else if (message.contains("corner_kick_l")) {
+			if (world.isLeftSide()) {
+				world.setState(WorldState.ENEMY_CORNER_KICK);
+			} else {
+				world.setState(WorldState.FRIENDLY_CORNER_KICK);
+			}
+		} else if (message.contains("corner_kick_r")) {
+			if (world.isRightSide()) {
+				world.setState(WorldState.ENEMY_CORNER_KICK);
+			} else {
+				world.setState(WorldState.FRIENDLY_CORNER_KICK);
+			}
+		} else if (message.contains("free_kick_l")) {
+			if (world.isRightSide()) {
+				world.setState(WorldState.ENEMY_FREE_KICK);
+			} else {
+				world.setState(WorldState.FRIENDLY_FREE_KICK);
+			}
+		} else if (message.contains("free_kick_r")) {
+			if (world.isLeftSide()) {
+				world.setState(WorldState.ENEMY_FREE_KICK);
+			} else {
+				world.setState(WorldState.FRIENDLY_FREE_KICK);
+			}
+		} else if (message.contains("before_kick_off") || message.contains("goal")) {
 			world.setState(WorldState.BEFORE_KICK_OFF);
 		}
 	}
@@ -141,7 +177,7 @@ public class Parser extends Thread {
 			} catch (java.lang.StringIndexOutOfBoundsException e) {
 				hasNext = false;
 			}
-			
+
 			if (params.length > 0) {
 				world.distanceToObject(item, Double.parseDouble(params[0]));
 			}
@@ -156,14 +192,14 @@ public class Parser extends Thread {
 	private ParseContext<String> parseItem(String message) {
 		int rightPara = message.indexOf(')');
 		String item = message.substring(2, rightPara);
-		message = message.substring(rightPara+1, message.length()).trim();
+		message = message.substring(rightPara + 1, message.length()).trim();
 		return new ParseContext<String>(message, item);
 	}
 
 	private ParseContext<Integer> parseTime(String message) {
 		int firstSpace = message.indexOf(' ', 1);
 		int firstPara = message.indexOf(')');
-		if(firstPara < firstSpace || firstSpace == -1) {
+		if (firstPara < firstSpace || firstSpace == -1) {
 			return new ParseContext<Integer>("", 0);
 		}
 		int time = Integer.parseInt(message.substring(0, firstSpace));
