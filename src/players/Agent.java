@@ -87,8 +87,17 @@ public abstract class Agent implements TimeListener {
 		case Constants.Team.INNER_RIGHT_DEFENDER:
 		case Constants.Team.OUTER_RIGHT_DEFENDER:
 		case Constants.Team.RIGHT_MID:
+			move(Constants.RightWing.FRIENDLY_KICKOFF_X-20, mult
+					* Constants.RightWing.FRIENDLY_KICKOFF_Y);
+			break;
 		case Constants.Team.MID_MID:
+			move(Constants.CenterForward.FRIENDLY_KICKOFF_X-20, mult
+					* Constants.CenterForward.FRIENDLY_KICKOFF_Y);
+			break;
 		case Constants.Team.LEFT_MID:
+			move(Constants.LeftWing.FRIENDLY_KICKOFF_X-20, mult
+					* Constants.LeftWing.FRIENDLY_KICKOFF_Y);
+			break;
 		case Constants.Team.LEFT_WING:
 			move(Constants.LeftWing.FRIENDLY_KICKOFF_X, mult
 					* Constants.LeftWing.FRIENDLY_KICKOFF_Y);
