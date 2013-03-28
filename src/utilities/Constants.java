@@ -29,10 +29,11 @@ public final class Constants {
 		public static final double SCORING_DISTANCE = 25;
 		public static final int DRIBBLING_KICK_POWER = 50;
 		public static final int FORWARD_PASSING_ANGLE = 30;
-		public static final double FORWARD_PASSING_DISTANCE = 30;
+		public static final double FORWARD_PASSING_DISTANCE = 5;
 		public static final double CLOSE_TO_EDGE = 10;
 		public static final int CLOSE_ANGLE = 10;
 		public static final double TAKE_BALL_DISTANCE = 15;
+		public static final int JOGGING_SPEED = 75;
 	}
 
 	public static final class CenterForward {

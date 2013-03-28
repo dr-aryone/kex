@@ -52,7 +52,6 @@ public class Goalie extends Agent {
 	}
 
 	public void dash(int power, double direction) {
-		System.out.println("hej!");
 		double dist1 = world.getDistanceToObject("f p "+world.getSideChar()+" t");
 		double dist2 = world.getDistanceToObject("f p "+world.getSideChar()+" c");
 		double dist3 = world.getDistanceToObject("f p "+world.getSideChar()+" b");
@@ -69,7 +68,6 @@ public class Goalie extends Agent {
 		if(!canSeeFriendlyGoal()) {
 			turn(45);
 		} else if (!canSeeBall() || world.getDistToBall() > 50) {
-			System.out.println("RETURNING TO GOAL");
 			returnToGoal();
 		} else {
 			if (Math.abs(world.getAngleToBall()) > 20) {

@@ -88,9 +88,9 @@ public class LeftWing extends Agent {
 				turn(world.getAngleToObject(target));
 			} else {
 				if (world.getDistanceToObject(target) < 5) {
-					turn(45);
+					turn(90);
 				} else {
-					dash(60, world.getAngleToObject(target));
+					dash(Constants.Params.JOGGING_SPEED, world.getAngleToObject(target));
 				}
 			}
 		} else {
