@@ -175,5 +175,9 @@ public class WorldState {
 	public synchronized void dataProcessed() {
 		newData = false;
 	}
+	
+	public String getSideChar() {
+		return isRightSide() ? "r" : "l";
+	}
 
 }
