@@ -19,19 +19,29 @@ public class RightWing extends Agent {
 			if (world.hasNewData()) {
 				switch (world.getState()) {
 				case WorldState.PLAY_ON:
-					
-					if (canSeeBall() && world.getDistToBall() < 20) {
-						if (!tryToKick()) {
-							runToBall();
-						}
-					} else {
-						runToSlot();
-					}
+					playLogic();
+					break;
+				case WorldState.ENEMY_KICK_OFF:
+					break;
+				case WorldState.FRIENDLY_KICK_OFF:
 					break;
 				case WorldState.BEFORE_KICK_OFF:
 					moveFriendlyKickoff();
 					break;
+				case WorldState.FRIENDLY_FREE_KICK:
+					break;
+				case WorldState.ENEMY_FREE_KICK:
+					break;
+				case WorldState.FRIENDLY_KICK_IN:
+					break;
+				case WorldState.ENEMY_KICK_IN:
+					break;
+				case WorldState.FRIENDLY_CORNER_KICK:
+					break;
+				case WorldState.ENEMY_CORNER_KICK:
+					break;
 				default:
+					break;
 				}
 				world.dataProcessed();
 			} else {
@@ -41,6 +51,32 @@ public class RightWing extends Agent {
 					e.printStackTrace();
 				}
 			}
+		}
+	}
+
+	private void playLogic() {
+		if (canSeeBall() && world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE) {
+			if (world.getDistToBall() < Double.parseDouble(world
+					.getServerParam("kickable_margin"))) {
+				String passTarget = getPassTarget();
+				if (world.getDistToEnemyGoal() < Constants.Params.SCORING_DISTANCE) {
+					tryToScore();
+				} else if (passTarget != null) {
+					passForward(passTarget);
+				} else {
+					dribble();
+				}
+			}
+		} else {
+			runToSlot();
+		}
+	}
+	private void tryToScore() {
+
+		if (canSeeEnemyGoal()) {
+			kick(100, world.getAngleToEnemyGoal());
+		} else {
+			turn(45);
 		}
 	}
 
@@ -61,17 +97,4 @@ public class RightWing extends Agent {
 		}
 	}
 
-	private boolean tryToKick() {
-		if (world.getDistToBall() < Double.parseDouble(world
-				.getServerParam("kickable_margin"))) {
-			if (canSeeEnemyGoal()) {
-				kick(100, world.getAngleToEnemyGoal());
-			} else {
-				turn(45);
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
 }

@@ -19,12 +19,14 @@ public class LeftWing extends Agent {
 			if (world.hasNewData()) {
 				switch (world.getState()) {
 				case WorldState.PLAY_ON:
+					playLogic();
 					break;
 				case WorldState.ENEMY_KICK_OFF:
 					break;
 				case WorldState.FRIENDLY_KICK_OFF:
 					break;
 				case WorldState.BEFORE_KICK_OFF:
+					moveFriendlyKickoff();
 					break;
 				case WorldState.FRIENDLY_FREE_KICK:
 					break;
@@ -52,8 +54,35 @@ public class LeftWing extends Agent {
 		}
 	}
 
+	private void playLogic() {
+		if (canSeeBall() && world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE) {
+			if (world.getDistToBall() < Double.parseDouble(world
+					.getServerParam("kickable_margin"))) {
+				String passTarget = getPassTarget();
+				if (world.getDistToEnemyGoal() < Constants.Params.SCORING_DISTANCE) {
+					tryToScore();
+				} else if (passTarget != null) {
+					passForward(passTarget);
+				} else {
+					dribble();
+				}
+			}
+		} else {
+			runToSlot();
+		}
+	}
+
+	private void tryToScore() {
+
+		if (canSeeEnemyGoal()) {
+			kick(100, world.getAngleToEnemyGoal());
+		} else {
+			turn(45);
+		}
+	}
+
 	private void runToSlot() {
-		String target = world.isRightSide() ? "f p r t" : "f p l b";
+		String target = world.isRightSide() ? "f p l b" : "f p r t";
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
 			if (Math.abs(world.getAngleToObject(target)) > 10) {
 				turn(world.getAngleToObject(target));
@@ -66,20 +95,6 @@ public class LeftWing extends Agent {
 			}
 		} else {
 			turn(45);
-		}
-	}
-
-	private boolean tryToKick() {
-		if (world.getDistToBall() < Double.parseDouble(world
-				.getServerParam("kickable_margin"))) {
-			if (canSeeEnemyGoal()) {
-				kick(100, world.getAngleToEnemyGoal());
-			} else {
-				turn(45);
-			}
-			return true;
-		} else {
-			return false;
 		}
 	}
 }
