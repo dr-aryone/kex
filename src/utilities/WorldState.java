@@ -9,6 +9,10 @@ public class WorldState {
 	public static final int BEFORE_KICK_OFF = 4;
 	public static final int FRIENDLY_FREE_KICK = 5;
 	public static final int ENEMY_FREE_KICK = 6;
+	public static final int FRIENDLY_KICK_IN = 7;
+	public static final int ENEMY_KICK_IN = 8;
+	public static final int FRIENDLY_CORNER_KICK = 9;
+	public static final int ENEMY_CORNER_KICK = 10;
 	private boolean isLeftSide;
 	private HashMap<String, Integer> lastSeen = new HashMap<String, Integer>();
 	private HashMap<String, Integer> angleToObjects = new HashMap<String, Integer>();

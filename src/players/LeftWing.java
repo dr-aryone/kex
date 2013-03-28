@@ -19,18 +19,27 @@ public class LeftWing extends Agent {
 			if (world.hasNewData()) {
 				switch (world.getState()) {
 				case WorldState.PLAY_ON:
-					if (canSeeBall() && world.getDistToBall() < 20) {
-						if (!tryToKick()) {
-							runToBall();
-						}
-					} else {
-						runToSlot();
-					}
+					break;
+				case WorldState.ENEMY_KICK_OFF:
+					break;
+				case WorldState.FRIENDLY_KICK_OFF:
 					break;
 				case WorldState.BEFORE_KICK_OFF:
-					moveFriendlyKickoff();
+					break;
+				case WorldState.FRIENDLY_FREE_KICK:
+					break;
+				case WorldState.ENEMY_FREE_KICK:
+					break;
+				case WorldState.FRIENDLY_KICK_IN:
+					break;
+				case WorldState.ENEMY_KICK_IN:
+					break;
+				case WorldState.FRIENDLY_CORNER_KICK:
+					break;
+				case WorldState.ENEMY_CORNER_KICK:
 					break;
 				default:
+					break;
 				}
 				world.dataProcessed();
 			} else {
