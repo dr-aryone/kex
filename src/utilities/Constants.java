@@ -77,4 +77,14 @@ public final class Constants {
 		public static final int START_X = -35;
 		public static final int START_Y = -10;
 	}
+	
+	public static final class OuterLeftDefender {
+		public static final int START_X = -30;
+		public static final int START_Y = -30;
+	}
+	
+	public static final class OuterRightDefender {
+		public static final int START_X = -30;
+		public static final int START_Y = 30;
+	}
 }
