@@ -55,7 +55,7 @@ public class OuterRightDefender extends Agent {
 	}
 
 	private void playLogic() {
-		if (canSeeBall() && world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE) {
+		if (canSeeBall() && world.getDistToBall() < Constants.Params.DEFENDER_TAKE_BALL_DISTANCE) {
 			if (world.getDistToBall() < Double.parseDouble(world
 					.getServerParam("kickable_margin"))) {
 				String passTarget = getPassTarget();
