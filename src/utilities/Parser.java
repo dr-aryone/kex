@@ -124,13 +124,13 @@ public class Parser extends Thread {
 				world.setState(WorldState.FRIENDLY_KICK_IN);
 			}
 		} else if (message.contains("corner_kick_l")) {
-			if (world.isLeftSide()) {
+			if (world.isRightSide()) {
 				world.setState(WorldState.ENEMY_CORNER_KICK);
 			} else {
 				world.setState(WorldState.FRIENDLY_CORNER_KICK);
 			}
 		} else if (message.contains("corner_kick_r")) {
-			if (world.isRightSide()) {
+			if (world.isLeftSide()) {
 				world.setState(WorldState.ENEMY_CORNER_KICK);
 			} else {
 				world.setState(WorldState.FRIENDLY_CORNER_KICK);

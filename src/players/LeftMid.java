@@ -91,7 +91,7 @@ public class LeftMid extends Agent {
 			return;
 		}
 		notLookedAroundSince++;
-		String target = world.isLeftSide() ? "f c b" : "f c t";
+		String target = world.isRightSide() ? "f c b" : "f c t";
 		String target2 = "f c";
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
 			if (Math.abs(world.getAngleToObject(target)) > 10) {
