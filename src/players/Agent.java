@@ -26,7 +26,6 @@ public abstract class Agent implements TimeListener {
 	private boolean goalie;
 	private int role;
 	protected Queue<String> queue;
-	private boolean hasMoved;
 
 	public Agent(int role) {
 		if (role == Constants.Team.GOALIE) {
@@ -51,7 +50,6 @@ public abstract class Agent implements TimeListener {
 		world = new WorldState();
 		parser = new Parser(world, socket);
 		parser.start();
-		hasMoved = false;
 
 		MyTimer t = new MyTimer();
 		t.addListener(this);
@@ -70,13 +68,12 @@ public abstract class Agent implements TimeListener {
 	}
 
 	public void moveFriendlyKickoff() {
-		if (hasMoved)
-			return;
-		hasMoved = true;
 		int mult = 1;
 		if (world.isRightSide()) {
-			turn(180);
 			mult = -1;
+			if(isLookingBack()) {
+				turn(180);
+			}
 		}
 		switch (role) {
 		case Constants.Team.GOALIE:

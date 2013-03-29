@@ -150,17 +150,21 @@ public class Parser extends Thread {
 		} else if (message.contains("before_kick_off")) {
 			world.setState(WorldState.BEFORE_KICK_OFF);
 		} else if (message.contains("goal_kick_l")) {
-			if(world.isLeftSide()) {
+			if (world.isLeftSide()) {
 				world.setState(WorldState.FRIENDLY_GOAL_KICK);
 			} else {
 				world.setState(WorldState.ENEMY_GOAL_KICK);
 			}
 		} else if (message.contains("goal_kick_r")) {
-			if(world.isLeftSide()) {
+			if (world.isLeftSide()) {
 				world.setState(WorldState.ENEMY_GOAL_KICK);
 			} else {
 				world.setState(WorldState.FRIENDLY_GOAL_KICK);
 			}
+		} else if (message.contains("goal_l")) {
+			world.setState(WorldState.BEFORE_KICK_OFF);
+		} else if (message.contains("goal_r")) {
+			world.setState(WorldState.BEFORE_KICK_OFF);
 		}
 	}
 

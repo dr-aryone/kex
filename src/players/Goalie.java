@@ -21,6 +21,10 @@ public class Goalie extends Agent {
 				case WorldState.BEFORE_KICK_OFF:
 					moveFriendlyKickoff();
 					break;
+				case WorldState.ENEMY_KICK_OFF:
+					break;
+				case WorldState.FRIENDLY_KICK_OFF:
+					break;
 				case WorldState.FRIENDLY_GOAL_KICK:
 				case WorldState.FRIENDLY_FREE_KICK:
 					if(world.getDistToBall() < 2) {

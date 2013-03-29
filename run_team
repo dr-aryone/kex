@@ -1,11 +1,26 @@
 #!/bin/bash
 cd bin
+PIDS=()
 java players.Goalie &
+PIDS+=($!)
 java players.CenterForward &
+PIDS+=($!)
 java players.RightWing &
+PIDS+=($!)
 java players.LeftWing &
+PIDS+=($!)
 java players.MidMid &
+PIDS+=($!)
 java players.RightMid &
+PIDS+=($!)
 java players.LeftMid &
+PIDS+=($!)
 java players.InnerLeftDefender &
+PIDS+=($!)
 java players.InnerRightDefender &
+PIDS+=($!)
+
+for PID in $PIDS
+do
+	echo "$PID"
+done

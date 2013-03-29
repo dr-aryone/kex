@@ -57,7 +57,8 @@ public class RightMid extends Agent {
 	}
 
 	private void playLogic() {
-		if (canSeeBall() && world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE*1.5) {
+		if (canSeeBall()
+				&& world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE * 1.5) {
 			if (world.getDistToBall() < Double.parseDouble(world
 					.getServerParam("kickable_margin"))) {
 				String passTarget = getPassTarget();
@@ -75,6 +76,7 @@ public class RightMid extends Agent {
 			runToSlot();
 		}
 	}
+
 	private void tryToScore() {
 
 		if (canSeeEnemyGoal()) {
@@ -85,31 +87,33 @@ public class RightMid extends Agent {
 	}
 
 	private void runToSlot() {
-		if(notLookedAroundSince > 20) {
+		if (notLookedAroundSince > 20) {
 			turn(180);
 			notLookedAroundSince = 0;
 			return;
 		}
 		notLookedAroundSince++;
 		String target = world.isLeftSide() ? "f c b" : "f c t";
-		String target2 = "f c";
+		String target2 = world.isLeftSide() ? "f b l 10" : "f t l 10";
+		String target3 = world.isLeftSide() ? "f b r 10" : "f t r 10";
+		String target4 = world.isLeftSide() ? "f b 0" : "f t 0";
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
-			if (Math.abs(world.getAngleToObject(target)) > 10) {
+			if (Math.abs(world.getAngleToObject(target)) > 10
+					&& world.getDistanceToObject(target) > 15) {
 				turn(world.getAngleToObject(target));
 			} else {
-				if (world.getDistanceToObject(target) < 10) {
-					if(world.getDistanceToObject(target2) < 25) {
-						turn(90);
-					} else {
-						dash(Constants.Params.JOGGING_SPEED, world.getAngleToObject(target2));
-					}
+				if (world.getDistanceToObject(target) < 10
+						&& world.getDistanceToObject(target2) > 15
+						&& world.getDistanceToObject(target3) > 15
+						&& world.getDistanceToObject(target4) > 15) {
+					turn(90); // In slot position, look for ball
 				} else {
-					dash(Constants.Params.JOGGING_SPEED, world.getAngleToObject(target));
+					dash(Constants.Params.JOGGING_SPEED,
+							world.getAngleToObject(target));
 				}
 			}
 		} else {
 			turn(45);
 		}
 	}
-
 }
