@@ -69,50 +69,46 @@ public abstract class Agent implements TimeListener {
 		}
 	}
 
-	public void moveFriendlyKickoff() {
+	public void moveFriendlyKickoff() { //Left är - right är +
 		if (hasMoved)
 			return;
 		hasMoved = true;
-		int mult = 1;
 		if (world.isRightSide()) {
 			turn(180);
-			mult = -1;
 		}
 		switch (role) {
 		case Constants.Team.GOALIE:
 			move(Constants.Goalie.START_X, Constants.Goalie.START_Y);
 			break;
-		case Constants.Team.OUTER_LEFT_DEFENDER:
-		case Constants.Team.OUTER_RIGHT_DEFENDER:
 		case Constants.Team.RIGHT_MID:
-			move(Constants.RightWing.FRIENDLY_KICKOFF_X-20, mult
-					* Constants.RightWing.FRIENDLY_KICKOFF_Y);
+			move(Constants.RightWing.FRIENDLY_KICKOFF_X-20, Constants.RightWing.FRIENDLY_KICKOFF_Y);
 			break;
 		case Constants.Team.MID_MID:
-			move(Constants.CenterForward.FRIENDLY_KICKOFF_X-20, mult
-					* Constants.CenterForward.FRIENDLY_KICKOFF_Y);
+			move(Constants.CenterForward.FRIENDLY_KICKOFF_X-20, Constants.CenterForward.FRIENDLY_KICKOFF_Y);
 			break;
 		case Constants.Team.LEFT_MID:
-			move(Constants.LeftWing.FRIENDLY_KICKOFF_X-20, mult
-					* Constants.LeftWing.FRIENDLY_KICKOFF_Y);
+			move(Constants.LeftWing.FRIENDLY_KICKOFF_X-20, Constants.LeftWing.FRIENDLY_KICKOFF_Y);
 			break;
 		case Constants.Team.LEFT_WING:
-			move(Constants.LeftWing.FRIENDLY_KICKOFF_X, mult
-					* Constants.LeftWing.FRIENDLY_KICKOFF_Y);
+			move(Constants.LeftWing.FRIENDLY_KICKOFF_X, Constants.LeftWing.FRIENDLY_KICKOFF_Y);
 			break;
 		case Constants.Team.CENTER_FORWARD:
-			move(Constants.CenterForward.FRIENDLY_KICKOFF_X, mult
-					* Constants.CenterForward.FRIENDLY_KICKOFF_Y);
+			move(Constants.CenterForward.FRIENDLY_KICKOFF_X, Constants.CenterForward.FRIENDLY_KICKOFF_Y);
 			break;
 		case Constants.Team.RIGHT_WING:
-			move(Constants.RightWing.FRIENDLY_KICKOFF_X, mult
-					* Constants.RightWing.FRIENDLY_KICKOFF_Y);
+			move(Constants.RightWing.FRIENDLY_KICKOFF_X, Constants.RightWing.FRIENDLY_KICKOFF_Y);
 			break;
 		case Constants.Team.INNER_LEFT_DEFENDER:
-			move(Constants.InnerLeftDefender.START_X, mult * Constants.InnerLeftDefender.START_Y);
+			move(Constants.InnerLeftDefender.START_X, Constants.InnerLeftDefender.START_Y);
 			break;
 		case Constants.Team.INNER_RIGHT_DEFENDER:
-			move(Constants.InnerRightDefender.START_X, mult * Constants.InnerRightDefender.START_Y);
+			move(Constants.InnerRightDefender.START_X, Constants.InnerRightDefender.START_Y);
+			break;
+		case Constants.Team.OUTER_LEFT_DEFENDER:
+			move(Constants.OuterLeftDefender.START_X, Constants.OuterLeftDefender.START_Y);
+			break;
+		case Constants.Team.OUTER_RIGHT_DEFENDER:
+			move(Constants.OuterRightDefender.START_X, Constants.OuterRightDefender.START_Y);
 			break;
 		}
 	}
