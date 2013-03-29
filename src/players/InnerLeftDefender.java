@@ -64,7 +64,11 @@ public class InnerLeftDefender extends Agent {
 				} else if (passTarget != null) {
 					passForward(passTarget);
 				} else {
-					dribble();
+					if (friendlyPlayerChasingBall()) {
+						approachBall();
+					} else {
+						runToBall();
+					}
 				}
 			}
 		} else {

@@ -66,6 +66,12 @@ public class OuterLeftDefender extends Agent {
 				} else {
 					dribble();
 				}
+			} else {
+				if (friendlyPlayerChasingBall()) {
+					approachBall();
+				} else {
+					runToBall();
+				}
 			}
 		} else {
 			runToSlot();

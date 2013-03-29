@@ -55,7 +55,8 @@ public class OuterRightDefender extends Agent {
 	}
 
 	private void playLogic() {
-		if (canSeeBall() && world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE) {
+		if (canSeeBall()
+				&& world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE) {
 			if (world.getDistToBall() < Double.parseDouble(world
 					.getServerParam("kickable_margin"))) {
 				String passTarget = getPassTarget();
@@ -65,6 +66,12 @@ public class OuterRightDefender extends Agent {
 					passForward(passTarget);
 				} else {
 					dribble();
+				} 
+			} else {
+				if (friendlyPlayerChasingBall()) {
+					approachBall();
+				} else {
+					runToBall();
 				}
 			}
 		} else {
@@ -86,10 +93,11 @@ public class OuterRightDefender extends Agent {
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
 			if (world.getDistanceToObject(target) < 20) {
 				turn(90);
-			}else if (Math.abs(world.getAngleToObject(target)) > 10) {
+			} else if (Math.abs(world.getAngleToObject(target)) > 10) {
 				turn(world.getAngleToObject(target));
 			} else {
-				dash(Constants.Params.JOGGING_SPEED, world.getAngleToObject(target));
+				dash(Constants.Params.JOGGING_SPEED,
+						world.getAngleToObject(target));
 			}
 		} else {
 			turn(45);

@@ -80,7 +80,11 @@ public class CenterForward extends Agent {
 					dribble();
 				}
 			} else {
-				runToBall();
+				if (friendlyPlayerChasingBall()) {
+					approachBall();
+				} else {
+					runToBall();
+				}
 			}
 		} else {
 			turn(45);

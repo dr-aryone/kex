@@ -87,4 +87,20 @@ public final class Constants {
 		public static final int START_X = -30;
 		public static final int START_Y = 30;
 	}
+
+	public static final class RightMid {
+		public static final int START_X = -15;
+		public static final int START_Y = 0;
+		
+	}
+	public static final class LeftMid {
+		public static final int START_X = -15;
+		public static final int START_Y = -20;
+		
+	}
+	public static final class MidMid {
+		public static final int START_X = -15;
+		public static final int START_Y = 20;
+		
+	}
 }
