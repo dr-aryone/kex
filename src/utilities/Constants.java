@@ -44,7 +44,7 @@ public final class Constants {
 		public static final double ENEMY_KICKOFF_X = -10;
 		public static final double ENEMY_KICKOFF_Y = 0;
 	}
-	
+
 
 	public static final class RightWing {
 		public static final double FRIENDLY_KICKOFF_X = -1;
@@ -52,7 +52,7 @@ public final class Constants {
 		public static final double ENEMY_KICKOFF_X = -10;
 		public static final double ENEMY_KICKOFF_Y = 10;
 	}
-	
+
 
 	public static final class LeftWing {
 		public static final double FRIENDLY_KICKOFF_X = -1;
@@ -67,12 +67,14 @@ public final class Constants {
 		public static final int MIN_DIST_TO_PENALTY_AREA_LINE = 3;
 		public static final int MIN_DIST_TO_CENTER = 37;
 	}
-	
+
 	public static final class InnerRightDefender {
-		
+		public static final int START_X = -35;
+		public static final int START_Y = 10;
 	}
-	
-public static final class InnerLeftDefender {
-		
+
+	public static final class InnerLeftDefender {
+		public static final int START_X = -35;
+		public static final int START_Y = -10;
 	}
 }

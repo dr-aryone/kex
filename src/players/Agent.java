@@ -83,8 +83,6 @@ public abstract class Agent implements TimeListener {
 			move(Constants.Goalie.START_X, Constants.Goalie.START_Y);
 			break;
 		case Constants.Team.OUTER_LEFT_DEFENDER:
-		case Constants.Team.INNER_LEFT_DEFENDER:
-		case Constants.Team.INNER_RIGHT_DEFENDER:
 		case Constants.Team.OUTER_RIGHT_DEFENDER:
 		case Constants.Team.RIGHT_MID:
 			move(Constants.RightWing.FRIENDLY_KICKOFF_X-20, mult
@@ -109,6 +107,12 @@ public abstract class Agent implements TimeListener {
 		case Constants.Team.RIGHT_WING:
 			move(Constants.RightWing.FRIENDLY_KICKOFF_X, mult
 					* Constants.RightWing.FRIENDLY_KICKOFF_Y);
+			break;
+		case Constants.Team.INNER_LEFT_DEFENDER:
+			move(Constants.InnerLeftDefender.START_X, mult * Constants.InnerLeftDefender.START_Y);
+			break;
+		case Constants.Team.INNER_RIGHT_DEFENDER:
+			move(Constants.InnerRightDefender.START_X, mult * Constants.InnerRightDefender.START_Y);
 			break;
 		}
 	}
