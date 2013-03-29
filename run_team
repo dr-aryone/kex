@@ -19,6 +19,10 @@ java players.InnerLeftDefender &
 PIDS+=($!)
 java players.InnerRightDefender &
 PIDS+=($!)
+java players.OuterRightDefender &
+PIDS+=($!)
+java players.OuterLeftDefender &
+PIDS+=($!)
 
 for PID in $PIDS
 do
