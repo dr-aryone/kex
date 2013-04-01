@@ -10,7 +10,7 @@ public final class Constants {
 	}
 
 	public static final class Team {
-		public static final String NAME = "meinkemakers2";
+		public static final String NAME = "meinkemakers";
 		public static final int GOALIE = 1;
 		public static final int OUTER_RIGHT_DEFENDER = 2;
 		public static final int INNER_RIGHT_DEFENDER = 3;
@@ -34,7 +34,7 @@ public final class Constants {
 		public static final int CLOSE_ANGLE = 10;
 		public static final double TAKE_BALL_DISTANCE = 12;
 		public static final double DEFENDER_TAKE_BALL_DISTANCE = 20;
-		public static final int FRIENDLY_GOAL_INVALIDATE_TIME = 25;
+		public static final int FRIENDLY_GOAL_INVALIDATE_TIME = 15;
 		public static final int DEFAULT_INVALIDATE_TIME = 5;
 		public static final int JOGGING_SPEED = 75;
 		public static final int TURNING_LOOKING_ANGLE = 90;

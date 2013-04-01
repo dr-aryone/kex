@@ -5,8 +5,6 @@ import utilities.WorldState;
 
 public class Goalie extends Agent {
 
-	
-	
 	public static void main(String[] args) {
 		new Goalie();
 	}
@@ -19,6 +17,7 @@ public class Goalie extends Agent {
 
 	@Override
 	public void run() {
+		int turns = 0;
 		while (true) {
 			if (world.hasNewData()) {
 				cyclesSinceCatch++;
@@ -31,10 +30,30 @@ public class Goalie extends Agent {
 				case WorldState.FRIENDLY_KICK_OFF:
 					break;
 				case WorldState.FRIENDLY_GOAL_KICK:
-					passOrKickAway();
+					if(world.getDistToBall() > Double.parseDouble(world.getServerParam("kickable_margin"))) {
+						runToBall();
+					} else if(turns >= 4) {
+						turns = 0;
+						passOrKickAway();
+					} else {
+						turn(Constants.Params.TURNING_LOOKING_ANGLE);
+						turns++;
+					}
 					break;
 				case WorldState.FRIENDLY_FREE_KICK:
-					passOrKickAway();
+					if(world.getDistToBall() < 30) {
+						if(world.getDistToBall() > Double.parseDouble(world.getServerParam("kickable_margin"))) {
+							runToBall();
+						} else if(turns >= 4) {
+							turns = 0;
+							passOrKickAway();
+						} else {
+							turn(Constants.Params.TURNING_LOOKING_ANGLE);
+							turns++;
+						}
+					} else {
+						returnToGoal();
+					}
 					break;
 				default:
 					if (world.getDistToBall() < Double.parseDouble(world.getServerParam("catchable_area_l"))) {
@@ -74,7 +93,7 @@ public class Goalie extends Agent {
 	
 	private void alignToBall() {
 		if(!canSeeFriendlyGoal()) {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		} else if (!canSeeBall() || world.getDistToBall() > 50) {
 			returnToGoal();
 		} else {
@@ -103,10 +122,10 @@ public class Goalie extends Agent {
 			} else if (world.getDistToFriendlyGoal() > 5) {
 				super.dash(100, world.getAngleToFriendlyGoal());
 			} else {
-				turn(45);
+				turn(Constants.Params.TURNING_LOOKING_ANGLE);
 			}
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 	
