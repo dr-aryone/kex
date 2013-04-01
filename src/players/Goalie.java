@@ -5,9 +5,13 @@ import utilities.WorldState;
 
 public class Goalie extends Agent {
 
+	
+	
 	public static void main(String[] args) {
 		new Goalie();
 	}
+
+	private int cyclesSinceCatch;
 
 	public Goalie() {
 		super(Constants.Team.GOALIE);
@@ -17,6 +21,7 @@ public class Goalie extends Agent {
 	public void run() {
 		while (true) {
 			if (world.hasNewData()) {
+				cyclesSinceCatch++;
 				switch (world.getState()) {
 				case WorldState.BEFORE_KICK_OFF:
 					moveFriendlyKickoff();
@@ -27,28 +32,16 @@ public class Goalie extends Agent {
 					break;
 				case WorldState.FRIENDLY_GOAL_KICK:
 				case WorldState.FRIENDLY_FREE_KICK:
-					if(world.getDistToBall() < 2) {
-						String target = getPassTarget();
-						if(target != null) {
-							passForward(target);
-						} else {
-							if(canSeeEnemyGoal()) {
-								kick(100, world.getAngleToEnemyGoal());
-							} else if(isLookingBack()) {
-								kick(100, 180);
-							} else if(isLookingLeft()){
-								kick(100, 90);
-							} else if(isLookingRight()){
-								kick(100, -90);
-							} else {
-								kick(100, 0);
-							}
-						}
-					}
+					passOrKickAway();
 					break;
 				default:
-					if (world.getDistToBall() < 1.5) {
-						catchTheBall();
+					if (world.getDistToBall() < Integer.parseInt(world.getServerParam("catch_area_l"))) {
+						if(canCatch()) {
+							cyclesSinceCatch = 0;
+							catchTheBall();
+						} else {
+							passOrKickAway();
+						}
 					} else if (world.getDistToBall() < 20) {
 						runToBall();
 					} else {
@@ -113,6 +106,31 @@ public class Goalie extends Agent {
 		} else {
 			turn(45);
 		}
+	}
+	
+	private void passOrKickAway() {
+		if(world.getDistToBall() < Integer.parseInt(world.getServerParam("kickable_margin"))) {
+			String target = getPassTarget();
+			if(target != null) {
+				passForward(target);
+			} else {
+				if(canSeeEnemyGoal()) {
+					kick(100, world.getAngleToEnemyGoal());
+				} else if(isLookingBack()) {
+					kick(100, 180);
+				} else if(isLookingLeft()){
+					kick(100, 90);
+				} else if(isLookingRight()){
+					kick(100, -90);
+				} else {
+					kick(100, 0);
+				}
+			}
+		}
+	}
+	
+	private boolean canCatch() {
+		return cyclesSinceCatch >= 5 ? true : false;
 	}
 
 	private void catchTheBall() {
