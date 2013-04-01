@@ -35,7 +35,7 @@ public class Goalie extends Agent {
 					passOrKickAway();
 					break;
 				default:
-					if (world.getDistToBall() < Integer.parseInt(world.getServerParam("catch_area_l"))) {
+					if (world.getDistToBall() < 2) { //Integer.parseInt(world.getServerParam("catch_area_l")
 						if(canCatch()) {
 							cyclesSinceCatch = 0;
 							catchTheBall();
