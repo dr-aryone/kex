@@ -227,11 +227,11 @@ public abstract class Agent implements TimeListener {
 	}
 
 	private int getPassingPower(double distance) {
-		int power = (int) (80 + distance);
+		int power = (int) (30+distance*4);
 		return Math.min(power, 100);
 	}
 
-	public void passForward(String target) {
+	public void pass(String target) {
 		kick(getPassingPower(world.getDistanceToObject(target)),
 				world.getAngleToObject(target));
 	}

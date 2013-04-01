@@ -112,7 +112,7 @@ public class Goalie extends Agent {
 		if(world.getDistToBall() < Integer.parseInt(world.getServerParam("kickable_margin"))) {
 			String target = getPassTarget();
 			if(target != null) {
-				passForward(target);
+				pass(target);
 			} else {
 				if(canSeeEnemyGoal()) {
 					kick(100, world.getAngleToEnemyGoal());
