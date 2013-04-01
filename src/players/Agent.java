@@ -228,7 +228,7 @@ public abstract class Agent implements TimeListener {
 	}
 
 	public void runToSlot(String target, int targetDist) {
-		if (notLookedAroundSince > 20) {
+		if (notLookedAroundSince > 15) {
 			turn(180);
 			notLookedAroundSince = 0;
 			return;

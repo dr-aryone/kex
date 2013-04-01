@@ -74,7 +74,7 @@ public class OuterLeftDefender extends Agent {
 				runToBall();
 			}
 		} else {
-			runToSlot(world.isRightSide() ? "f p r b" : "f p l t", 10);
+			runToSlot(world.isRightSide() ? "f p r b" : "f p l t", 5);
 		}
 	}
 

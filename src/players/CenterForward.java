@@ -75,7 +75,7 @@ public class CenterForward extends Agent {
 				if (passTarget != null) {
 					pass(passTarget);
 				} else {
-					turn(180);
+					turn(Constants.Params.TURNING_LOOKING_ANGLE);
 				}
 			} else {
 				runToBall();
