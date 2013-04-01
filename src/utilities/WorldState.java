@@ -24,7 +24,6 @@ public class WorldState {
 	private int state;
 	private int currentTime;
 
-
 	public int getCurrentTime() {
 		return currentTime;
 	}
@@ -35,34 +34,34 @@ public class WorldState {
 
 	public int getAngleToObject(String key) {
 		Integer angle = angleToObjects.get(key);
-		if(angle == null) {
+		if (angle == null) {
 			return Constants.Params.NOT_DEFINED;
 		}
-		
+
 		Integer time = lastSeen.get(key);
-		if(time == null) {
+		if (time == null) {
 			return Constants.Params.NOT_DEFINED;
 		}
 		int timeSinceLastSeen = getCurrentTime() - time;
-		if(!isPositionValid(timeSinceLastSeen, key, isRightSide())) {
+		if (!isPositionValid(timeSinceLastSeen, key, isRightSide())) {
 			return Constants.Params.NOT_DEFINED;
 		}
-		
+
 		return angle;
 	}
-	
+
 	public double getDistanceToObject(String key) {
 		Double dist = distanceToObjects.get(key);
-		if(dist == null) {
+		if (dist == null) {
 			return Constants.Params.NOT_DEFINED;
 		}
-		
+
 		Integer time = lastSeen.get(key);
-		if(time == null) {
+		if (time == null) {
 			return Constants.Params.NOT_DEFINED;
 		}
 		int timeSinceLastSeen = getCurrentTime() - time;
-		if(!isPositionValid(timeSinceLastSeen, key, isRightSide())) {
+		if (!isPositionValid(timeSinceLastSeen, key, isRightSide())) {
 			return Constants.Params.NOT_DEFINED;
 		}
 		return dist;
@@ -70,7 +69,7 @@ public class WorldState {
 
 	public String getServerParam(String key) {
 		String serverParam = serverParams.get(key);
-		if(serverParam == null) {
+		if (serverParam == null) {
 			return "";
 		}
 		return serverParam;
@@ -109,7 +108,8 @@ public class WorldState {
 			return getAngleToObject("g l");
 		} else {
 			return getAngleToObject("g r");
-		}	}
+		}
+	}
 
 	public boolean isLeftSide() {
 		return isLeftSide;
@@ -135,11 +135,9 @@ public class WorldState {
 		return getDistanceToObject("b");
 	}
 
-
 	public int getAngleToBall() {
 		return getAngleToObject("b");
 	}
-
 
 	public void setState(int state) {
 		this.state = state;
@@ -157,14 +155,15 @@ public class WorldState {
 		}
 	}
 
-	public boolean isPositionValid(int timeSinceLastSeen, String object, boolean isRightSide) {
-		if((object.contains("g r") && isRightSide) || (object.contains("g l") && isLeftSide())) {
+	public boolean isPositionValid(int timeSinceLastSeen, String object,
+			boolean isRightSide) {
+		if ((object.contains("g r") && isRightSide)
+				|| (object.contains("g l") && isLeftSide())) {
 			return timeSinceLastSeen < Constants.Params.FRIENDLY_GOAL_INVALIDATE_TIME;
 		} else {
 			return timeSinceLastSeen < Constants.Params.DEFAULT_INVALIDATE_TIME;
 		}
 	}
-
 
 	public boolean isRightSide() {
 		return !isLeftSide;
@@ -181,7 +180,7 @@ public class WorldState {
 	public synchronized void dataProcessed() {
 		newData = false;
 	}
-	
+
 	public String getSideChar() {
 		return isRightSide() ? "r" : "l";
 	}

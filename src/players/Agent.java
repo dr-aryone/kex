@@ -26,6 +26,7 @@ public abstract class Agent implements TimeListener {
 	private boolean goalie;
 	private int role;
 	protected Queue<String> queue;
+	private int notLookedAroundSince;
 
 	public Agent(int role) {
 		if (role == Constants.Team.GOALIE) {
@@ -206,7 +207,7 @@ public abstract class Agent implements TimeListener {
 		if (!isLookingBack()) {
 			for (int i = 1; i <= 12; i++) {
 				int angle = world.getAngleToObject(currTarget);
-				if (angle == Constants.Params.NOT_DEFINED){
+				if (angle == Constants.Params.NOT_DEFINED) {
 					currTarget = "p \"" + Constants.Team.NAME + "\" " + i;
 					continue;
 				}
@@ -226,14 +227,43 @@ public abstract class Agent implements TimeListener {
 		return target;
 	}
 
+	public void runToSlot(String target, int targetDist) {
+		if (notLookedAroundSince > 20) {
+			turn(180);
+			notLookedAroundSince = 0;
+			return;
+		}
+		notLookedAroundSince++;
+		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
+			if (Math.abs(world.getAngleToObject(target)) > 40
+					&& world.getDistanceToObject(target) > targetDist) {
+				turn(world.getAngleToObject(target));
+			} else {
+				if (world.getDistanceToObject(target) < targetDist) {
+					turn(Constants.Params.TURNING_LOOKING_ANGLE); 
+				} else {
+					dash(Constants.Params.JOGGING_SPEED,
+							world.getAngleToObject(target));
+				}
+			}
+		} else {
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
+		}
+	}
+
 	private int getPassingPower(double distance) {
-		int power = (int) (30+distance*4);
+		int power = (int) (30 + distance * 3);
 		return Math.min(power, 100);
 	}
 
 	public void pass(String target) {
 		kick(getPassingPower(world.getDistanceToObject(target)),
 				world.getAngleToObject(target));
+	}
+	
+
+	public void tackle(int angle) {
+		queue.add("(tackle " + angle + " false)");
 	}
 
 	public void dribble() {

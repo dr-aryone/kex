@@ -31,6 +31,8 @@ public class Goalie extends Agent {
 				case WorldState.FRIENDLY_KICK_OFF:
 					break;
 				case WorldState.FRIENDLY_GOAL_KICK:
+					passOrKickAway();
+					break;
 				case WorldState.FRIENDLY_FREE_KICK:
 					passOrKickAway();
 					break;

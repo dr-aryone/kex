@@ -64,18 +64,17 @@ public class OuterLeftDefender extends Agent {
 					tryToScore();
 				} else if (passTarget != null) {
 					pass(passTarget);
+				}  else if (world.getDistanceToObject("p") < Integer
+						.parseInt(world.getServerParam("tackle_dist"))) {
+					tackle(world.getAngleToObject("p"));
 				} else {
 					dribble();
 				}
 			} else {
-				if (friendlyPlayerChasingBall()) {
-					approachBall();
-				} else {
-					runToBall();
-				}
+				runToBall();
 			}
 		} else {
-			runToSlot();
+			runToSlot(world.isRightSide() ? "f p r b" : "f p l t", 10);
 		}
 	}
 
@@ -83,22 +82,6 @@ public class OuterLeftDefender extends Agent {
 
 		if (canSeeEnemyGoal()) {
 			kick(100, world.getAngleToEnemyGoal());
-		} else {
-			turn(Constants.Params.TURNING_LOOKING_ANGLE);
-		}
-	}
-
-	private void runToSlot() {
-		String target = world.isRightSide() ? "f p r b" : "f p l t";
-		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
-			if (world.getDistanceToObject(target) < 10) {
-				turn(Constants.Params.TURNING_LOOKING_ANGLE);
-			} else if (Math.abs(world.getAngleToObject(target)) > 10) {
-				turn(world.getAngleToObject(target));
-			} else {
-				dash(Constants.Params.JOGGING_SPEED,
-						world.getAngleToObject(target));
-			}
 		} else {
 			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}

@@ -53,51 +53,35 @@ public class InnerRightDefender extends Agent {
 			}
 		}
 	}
-	
+
 	private void playLogic() {
-		if (canSeeBall() && world.getDistToBall() < Constants.Params.DEFENDER_TAKE_BALL_DISTANCE) {
-			if (world.getDistToBall() < Double.parseDouble(world.getServerParam("kickable_margin"))) {
+		if (canSeeBall()
+				&& world.getDistToBall() < Constants.Params.DEFENDER_TAKE_BALL_DISTANCE) {
+			if (world.getDistToBall() < Double.parseDouble(world
+					.getServerParam("kickable_margin"))) {
 				String passTarget = getPassTarget();
 				if (world.getDistToEnemyGoal() < Constants.Params.SCORING_DISTANCE) {
 					tryToScore();
 				} else if (passTarget != null) {
 					pass(passTarget);
+				} else if (world.getDistanceToObject("p") < Integer
+						.parseInt(world.getServerParam("tackle_dist"))) {
+					tackle(world.getAngleToObject("p"));
 				} else {
 					dribble();
 				}
 			} else {
-				if (friendlyPlayerChasingBall()) {
-					approachBall();
-				} else {
-					runToBall();
-				}
+				runToBall();
 			}
 		} else {
-			runToSlot();
+			runToSlot(world.isRightSide() ? "f p r c" : "f p l c", 10);
 		}
 	}
-	
+
 	private void tryToScore() {
 
 		if (canSeeEnemyGoal()) {
 			kick(100, world.getAngleToEnemyGoal());
-		} else {
-			turn(Constants.Params.TURNING_LOOKING_ANGLE);
-		}
-	}
-
-	private void runToSlot() {
-		String target = world.isRightSide() ? "f p r c" : "f p l c";
-		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
-			if (Math.abs(world.getAngleToObject(target)) > 10) {
-				turn(world.getAngleToObject(target));
-			} else {
-				if (world.getDistanceToObject(target) < 5) {
-					turn(90);
-				} else {
-					dash(Constants.Params.JOGGING_SPEED, world.getAngleToObject(target));
-				}
-			}
 		} else {
 			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
