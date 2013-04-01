@@ -64,7 +64,7 @@ public class LeftWing extends Agent {
 				if (world.getDistToEnemyGoal() < Constants.Params.SCORING_DISTANCE) {
 					tryToScore();
 				} else if (passTarget != null) {
-					passForward(passTarget);
+					pass(passTarget);
 				} else {
 					dribble();
 				}
