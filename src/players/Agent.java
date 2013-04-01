@@ -240,7 +240,7 @@ public abstract class Agent implements TimeListener {
 				turn(world.getAngleToObject(target));
 			} else {
 				if (world.getDistanceToObject(target) < targetDist) {
-					turn(Constants.Params.TURNING_LOOKING_ANGLE); 
+					turn(Constants.Params.TURNING_LOOKING_ANGLE);
 				} else {
 					dash(Constants.Params.JOGGING_SPEED,
 							world.getAngleToObject(target));
@@ -260,7 +260,6 @@ public abstract class Agent implements TimeListener {
 		kick(getPassingPower(world.getDistanceToObject(target)),
 				world.getAngleToObject(target));
 	}
-	
 
 	public void tackle(int angle) {
 		queue.add("(tackle " + angle + " false)");
@@ -278,6 +277,10 @@ public abstract class Agent implements TimeListener {
 				angle = 100;
 			} else if (isLookingRight()) {
 				angle = -100;
+			} else if (world.getDistanceToObject("l l") < 10
+					|| world.getDistanceToObject("l r") < 10) {
+				turn(Constants.Params.TURNING_LOOKING_ANGLE);
+				return;
 			}
 			kick(Constants.Params.DRIBBLING_KICK_POWER, angle);
 		}
