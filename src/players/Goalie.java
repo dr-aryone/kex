@@ -44,7 +44,7 @@ public class Goalie extends Agent {
 						} else {
 							passOrKickAway();
 						}
-					} else if (world.getDistToBall() < 12) {
+					} else if (world.getDistToBall() < 15) {
 						runToBall();
 					} else {
 						alignToBall();
