@@ -37,6 +37,7 @@ public final class Constants {
 		public static final int FRIENDLY_GOAL_INVALIDATE_TIME = 25;
 		public static final int DEFAULT_INVALIDATE_TIME = 5;
 		public static final int JOGGING_SPEED = 75;
+		public static final int TURNING_LOOKING_ANGLE = 90;
 	}
 
 	public static final class CenterForward {
@@ -87,5 +88,21 @@ public final class Constants {
 	public static final class OuterRightDefender {
 		public static final int START_X = -30;
 		public static final int START_Y = 30;
+	}
+
+	public static final class RightMid {
+		public static final int START_X = -15;
+		public static final int START_Y = 0;
+		
+	}
+	public static final class LeftMid {
+		public static final int START_X = -15;
+		public static final int START_Y = -20;
+		
+	}
+	public static final class MidMid {
+		public static final int START_X = -15;
+		public static final int START_Y = 20;
+		
 	}
 }

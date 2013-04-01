@@ -35,7 +35,7 @@ public class CenterForward extends Agent {
 				case WorldState.ENEMY_FREE_KICK:
 					break;
 				case WorldState.FRIENDLY_KICK_IN:
-					playLogic();
+					kickIn();
 					break;
 				case WorldState.ENEMY_KICK_IN:
 					break;
@@ -67,6 +67,24 @@ public class CenterForward extends Agent {
 		}
 	}
 
+	private void kickIn() {
+		if (canSeeBall()) {
+			if (world.getDistToBall() < Double.parseDouble(world
+					.getServerParam("kickable_margin"))) {
+				String passTarget = getPassTarget();
+				if (passTarget != null) {
+					passForward(passTarget);
+				} else {
+					turn(180);
+				}
+			} else {
+				runToBall();
+			}
+		} else {
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
+		}
+	}
+
 	private void playLogic() {
 		if (canSeeBall()) {
 			if (world.getDistToBall() < Double.parseDouble(world
@@ -80,19 +98,22 @@ public class CenterForward extends Agent {
 					dribble();
 				}
 			} else {
-				runToBall();
+				if (friendlyPlayerChasingBall()) {
+					approachBall();
+				} else {
+					runToBall();
+				}
 			}
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 
 	private void tryToScore() {
-
 		if (canSeeEnemyGoal()) {
 			kick(100, world.getAngleToEnemyGoal());
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 }

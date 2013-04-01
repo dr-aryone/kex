@@ -70,7 +70,11 @@ public class RightMid extends Agent {
 					dribble();
 				}
 			} else {
-				runToBall();
+				if (friendlyPlayerChasingBall()) {
+					approachBall();
+				} else {
+					runToBall();
+				}
 			}
 		} else {
 			runToSlot();
@@ -82,7 +86,7 @@ public class RightMid extends Agent {
 		if (canSeeEnemyGoal()) {
 			kick(100, world.getAngleToEnemyGoal());
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 
@@ -94,26 +98,20 @@ public class RightMid extends Agent {
 		}
 		notLookedAroundSince++;
 		String target = world.isLeftSide() ? "f c b" : "f c t";
-		String target2 = world.isLeftSide() ? "f b l 10" : "f t l 10";
-		String target3 = world.isLeftSide() ? "f b r 10" : "f t r 10";
-		String target4 = world.isLeftSide() ? "f b 0" : "f t 0";
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
 			if (Math.abs(world.getAngleToObject(target)) > 10
 					&& world.getDistanceToObject(target) > 15) {
 				turn(world.getAngleToObject(target));
 			} else {
-				if (world.getDistanceToObject(target) < 10
-						&& world.getDistanceToObject(target2) > 15
-						&& world.getDistanceToObject(target3) > 15
-						&& world.getDistanceToObject(target4) > 15) {
-					turn(90); // In slot position, look for ball
+				if (world.getDistanceToObject(target) < 20) {
+					turn(Constants.Params.TURNING_LOOKING_ANGLE); // In slot position, look for ball
 				} else {
 					dash(Constants.Params.JOGGING_SPEED,
 							world.getAngleToObject(target));
 				}
 			}
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 }

@@ -64,7 +64,11 @@ public class InnerLeftDefender extends Agent {
 				} else if (passTarget != null) {
 					passForward(passTarget);
 				} else {
-					dribble();
+					if (friendlyPlayerChasingBall()) {
+						approachBall();
+					} else {
+						runToBall();
+					}
 				}
 			}
 		} else {
@@ -77,12 +81,12 @@ public class InnerLeftDefender extends Agent {
 		if (canSeeEnemyGoal()) {
 			kick(100, world.getAngleToEnemyGoal());
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 
 	private void runToSlot() {
-		String target = world.isRightSide() ? "f p r b" : "f p l t";
+		String target = world.isRightSide() ? "f p r c" : "f p l c";
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
 			if (Math.abs(world.getAngleToObject(target)) > 10) {
 				turn(world.getAngleToObject(target));
@@ -94,7 +98,7 @@ public class InnerLeftDefender extends Agent {
 				}
 			}
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 }

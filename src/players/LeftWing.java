@@ -57,7 +57,7 @@ public class LeftWing extends Agent {
 	}
 
 	private void playLogic() {
-		if (canSeeBall() && world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE) {
+		if (canSeeBall() && world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE*1.5) {
 			if (world.getDistToBall() < Double.parseDouble(world
 					.getServerParam("kickable_margin"))) {
 				String passTarget = getPassTarget();
@@ -69,7 +69,11 @@ public class LeftWing extends Agent {
 					dribble();
 				}
 			} else {
-				runToBall();
+				if (friendlyPlayerChasingBall()) {
+					approachBall();
+				} else {
+					runToBall();
+				}
 			}
 		} else {
 			runToSlot();
@@ -81,12 +85,12 @@ public class LeftWing extends Agent {
 		if (canSeeEnemyGoal()) {
 			kick(100, world.getAngleToEnemyGoal());
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 
 	private void runToSlot() {
-		if(notLookedAroundSince > 20) {
+		if (notLookedAroundSince > 20) {
 			turn(180);
 			notLookedAroundSince = 0;
 			return;
@@ -94,17 +98,19 @@ public class LeftWing extends Agent {
 		notLookedAroundSince++;
 		String target = world.isRightSide() ? "f p l b" : "f p r t";
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
-			if (Math.abs(world.getAngleToObject(target)) > 10) {
+			if (Math.abs(world.getAngleToObject(target)) > 10
+					&& world.getDistanceToObject(target) > 15) {
 				turn(world.getAngleToObject(target));
 			} else {
-				if (world.getDistanceToObject(target) < 5) {
-					turn(90);
+				if (world.getDistanceToObject(target) < 20) {
+					turn(Constants.Params.TURNING_LOOKING_ANGLE); // In slot position, look for ball
 				} else {
-					dash(Constants.Params.JOGGING_SPEED, world.getAngleToObject(target));
+					dash(Constants.Params.JOGGING_SPEED,
+							world.getAngleToObject(target));
 				}
 			}
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 }
