@@ -197,6 +197,24 @@ public abstract class Agent implements TimeListener {
 		}
 	}
 
+	public String getClosestFriend() {
+		String target = null;
+		String currTarget = "p \"" + Constants.Team.NAME + "\"";
+		for (int i = 1; i <= 12; i++) {
+			int angle = world.getAngleToObject(currTarget);
+			if (angle == Constants.Params.NOT_DEFINED) {
+				currTarget = "p \"" + Constants.Team.NAME + "\" " + i;
+				continue;
+			}
+			double distance = world.getDistanceToObject(currTarget);
+			if (target == null || world.getDistanceToObject(target) > distance) {
+				target = currTarget;
+			}
+			currTarget = "p \"" + Constants.Team.NAME + "\" " + i;
+		}
+		return target;
+	}
+
 	/**
 	 * @return target name if there is any, null otherwise
 	 */

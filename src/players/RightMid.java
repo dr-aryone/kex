@@ -56,7 +56,7 @@ public class RightMid extends Agent {
 
 	private void playLogic() {
 		if (canSeeBall()
-				&& world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE * 1.5) {
+				&& world.getDistToBall() < Constants.Params.TAKE_BALL_DISTANCE) {
 			if (world.getDistToBall() < Double.parseDouble(world
 					.getServerParam("kickable_margin"))) {
 				String passTarget = getPassTarget();
@@ -80,7 +80,6 @@ public class RightMid extends Agent {
 	}
 
 	private void tryToScore() {
-
 		if (canSeeEnemyGoal()) {
 			kick(100, world.getAngleToEnemyGoal());
 		} else {
