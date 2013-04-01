@@ -37,14 +37,14 @@ public class Goalie extends Agent {
 					passOrKickAway();
 					break;
 				default:
-					if (world.getDistToBall() < Integer.parseInt(world.getServerParam("catch_area_l"))) {
+					if (world.getDistToBall() < Double.parseDouble(world.getServerParam("catchable_area_l"))) {
 						if(canCatch()) {
 							cyclesSinceCatch = 0;
 							catchTheBall();
 						} else {
 							passOrKickAway();
 						}
-					} else if (world.getDistToBall() < 20) {
+					} else if (world.getDistToBall() < 12) {
 						runToBall();
 					} else {
 						alignToBall();
@@ -111,7 +111,7 @@ public class Goalie extends Agent {
 	}
 	
 	private void passOrKickAway() {
-		if(world.getDistToBall() < Integer.parseInt(world.getServerParam("kickable_margin"))) {
+		if(world.getDistToBall() < Double.parseDouble(world.getServerParam("kickable_margin"))) {
 			String target = getPassTarget();
 			if(target != null) {
 				pass(target);
@@ -128,6 +128,8 @@ public class Goalie extends Agent {
 					kick(100, 0);
 				}
 			}
+		} else {
+			runToBall();
 		}
 	}
 	
