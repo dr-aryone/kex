@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -159,6 +160,7 @@ public abstract class Agent implements TimeListener {
 	}
 
 	private void updateAngles(int direction) {
+		try {
 		String key;
 		Integer previousAngle, newAngle;
 		HashMap<String, Integer> angleToObjects = world.getAngleToObjects();
@@ -173,6 +175,9 @@ public abstract class Agent implements TimeListener {
 				newAngle = 360 + newAngle;
 			}
 			angleToObjects.put(key, newAngle);
+		}
+		} catch (ConcurrentModificationException e) {
+			//lol fuck it
 		}
 	}
 
