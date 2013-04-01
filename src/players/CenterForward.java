@@ -81,7 +81,7 @@ public class CenterForward extends Agent {
 				runToBall();
 			}
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 
@@ -105,16 +105,15 @@ public class CenterForward extends Agent {
 				}
 			}
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 
 	private void tryToScore() {
-
 		if (canSeeEnemyGoal()) {
 			kick(100, world.getAngleToEnemyGoal());
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 }

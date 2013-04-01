@@ -83,15 +83,15 @@ public class OuterRightDefender extends Agent {
 		if (canSeeEnemyGoal()) {
 			kick(100, world.getAngleToEnemyGoal());
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 
 	private void runToSlot() {
-		String target = world.isRightSide() ? "f t r 20" : "f b l 20";
+		String target = world.isRightSide() ? "f p r t" : "f p l b";
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
-			if (world.getDistanceToObject(target) < 20) {
-				turn(90);
+			if (world.getDistanceToObject(target) < 10) {
+				turn(Constants.Params.TURNING_LOOKING_ANGLE);
 			} else if (Math.abs(world.getAngleToObject(target)) > 10) {
 				turn(world.getAngleToObject(target));
 			} else {
@@ -99,7 +99,7 @@ public class OuterRightDefender extends Agent {
 						world.getAngleToObject(target));
 			}
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 }

@@ -84,7 +84,7 @@ public class LeftMid extends Agent {
 		if (canSeeEnemyGoal()) {
 			kick(100, world.getAngleToEnemyGoal());
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 
@@ -103,14 +103,14 @@ public class LeftMid extends Agent {
 				turn(world.getAngleToObject(target));
 			} else {
 				if (world.getDistanceToObject(target) < 20) {
-					turn(90); // In slot position, look for ball
+					turn(Constants.Params.TURNING_LOOKING_ANGLE); // In slot position, look for ball
 				} else {
 					dash(Constants.Params.JOGGING_SPEED,
 							world.getAngleToObject(target));
 				}
 			}
 		} else {
-			turn(45);
+			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
 

@@ -37,6 +37,7 @@ public final class Constants {
 		public static final int FRIENDLY_GOAL_INVALIDATE_TIME = 25;
 		public static final int DEFAULT_INVALIDATE_TIME = 5;
 		public static final int JOGGING_SPEED = 75;
+		public static final int TURNING_LOOKING_ANGLE = 90;
 	}
 
 	public static final class CenterForward {

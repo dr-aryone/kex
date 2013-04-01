@@ -180,7 +180,7 @@ public abstract class Agent implements TimeListener {
 	}
 
 	public void runToBall() {
-		if (Math.abs(world.getAngleToBall()) >= 45) {
+		if (Math.abs(world.getAngleToBall()) > 40) {
 			turn(world.getAngleToBall());
 		} else {
 			dash(100, world.getAngleToBall());
