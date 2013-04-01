@@ -9,8 +9,6 @@ public class RightMid extends Agent {
 		new RightMid();
 	}
 
-	private int notLookedAroundSince;
-
 	public RightMid() {
 		super(Constants.Team.RIGHT_MID);
 	}
@@ -77,7 +75,7 @@ public class RightMid extends Agent {
 				}
 			}
 		} else {
-			runToSlot();
+			runToSlot(world.isLeftSide() ? "f c b" : "f c t", 15);
 		}
 	}
 
@@ -90,28 +88,4 @@ public class RightMid extends Agent {
 		}
 	}
 
-	private void runToSlot() {
-		if (notLookedAroundSince > 20) {
-			turn(180);
-			notLookedAroundSince = 0;
-			return;
-		}
-		notLookedAroundSince++;
-		String target = world.isLeftSide() ? "f c b" : "f c t";
-		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
-			if (Math.abs(world.getAngleToObject(target)) > 10
-					&& world.getDistanceToObject(target) > 15) {
-				turn(world.getAngleToObject(target));
-			} else {
-				if (world.getDistanceToObject(target) < 20) {
-					turn(Constants.Params.TURNING_LOOKING_ANGLE); // In slot position, look for ball
-				} else {
-					dash(Constants.Params.JOGGING_SPEED,
-							world.getAngleToObject(target));
-				}
-			}
-		} else {
-			turn(Constants.Params.TURNING_LOOKING_ANGLE);
-		}
-	}
 }

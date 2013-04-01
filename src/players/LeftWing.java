@@ -9,7 +9,6 @@ public class LeftWing extends Agent {
 		new LeftWing();
 	}
 
-	private int notLookedAroundSince;
 
 	public LeftWing() {
 		super(Constants.Team.LEFT_WING);
@@ -76,7 +75,7 @@ public class LeftWing extends Agent {
 				}
 			}
 		} else {
-			runToSlot();
+			runToSlot(world.isRightSide() ? "f p l b" : "f p r t", 15);
 		}
 	}
 
@@ -84,31 +83,6 @@ public class LeftWing extends Agent {
 
 		if (canSeeEnemyGoal()) {
 			kick(100, world.getAngleToEnemyGoal());
-		} else {
-			turn(Constants.Params.TURNING_LOOKING_ANGLE);
-		}
-	}
-
-	private void runToSlot() {
-		if (notLookedAroundSince > 20) {
-			turn(180);
-			notLookedAroundSince = 0;
-			return;
-		}
-		notLookedAroundSince++;
-		String target = world.isRightSide() ? "f p l b" : "f p r t";
-		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
-			if (Math.abs(world.getAngleToObject(target)) > 10
-					&& world.getDistanceToObject(target) > 15) {
-				turn(world.getAngleToObject(target));
-			} else {
-				if (world.getDistanceToObject(target) < 20) {
-					turn(Constants.Params.TURNING_LOOKING_ANGLE); // In slot position, look for ball
-				} else {
-					dash(Constants.Params.JOGGING_SPEED,
-							world.getAngleToObject(target));
-				}
-			}
 		} else {
 			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
