@@ -180,7 +180,7 @@ public abstract class Agent implements TimeListener {
 	}
 
 	public void runToBall() {
-		if (Math.abs(world.getAngleToBall()) > 20) {
+		if (Math.abs(world.getAngleToBall()) >= 45) {
 			turn(world.getAngleToBall());
 		} else {
 			dash(100, world.getAngleToBall());
@@ -232,7 +232,6 @@ public abstract class Agent implements TimeListener {
 	}
 
 	public void passForward(String target) {
-		System.out.println("PASSING " + target);
 		kick(getPassingPower(world.getDistanceToObject(target)),
 				world.getAngleToObject(target));
 	}
