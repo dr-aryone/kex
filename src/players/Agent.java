@@ -252,7 +252,7 @@ public abstract class Agent implements TimeListener {
 	}
 
 	private int getPassingPower(double distance) {
-		int power = (int) (30 + distance * 3);
+		int power = (int) (10 + distance * 4);
 		return Math.min(power, 100);
 	}
 
