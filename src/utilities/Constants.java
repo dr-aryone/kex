@@ -33,6 +33,7 @@ public final class Constants {
 		public static final double CLOSE_TO_EDGE = 10;
 		public static final int CLOSE_ANGLE = 10;
 		public static final double TAKE_BALL_DISTANCE = 12;
+		public static final double DEFENDER_TAKE_BALL_DISTANCE = 20;
 		public static final int FRIENDLY_GOAL_INVALIDATE_TIME = 25;
 		public static final int DEFAULT_INVALIDATE_TIME = 5;
 		public static final int JOGGING_SPEED = 75;
