@@ -90,7 +90,7 @@ public class Goalie extends Agent {
 			super.dash(power, direction);
 		}
 	}
-	
+
 	private void alignToBall() {
 		if(!canSeeFriendlyGoal()) {
 			turn(Constants.Params.TURNING_LOOKING_ANGLE);
@@ -128,16 +128,16 @@ public class Goalie extends Agent {
 			turn(Constants.Params.TURNING_LOOKING_ANGLE);
 		}
 	}
-	
+
 	private void passOrKickAway() {
 		if(world.getDistToBall() < Double.parseDouble(world.getServerParam("kickable_margin"))) {
 			String target = getPassTarget();
 			if(target != null) {
 				pass(target);
 			} else {
-				if(canSeeEnemyGoal()) {
+				if(canSeeEnemyGoal() && world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED) {
 					kick(100, world.getAngleToEnemyGoal());
-				} else if(isLookingBack()) {
+				}else if(isLookingBack()) {
 					kick(100, 180);
 				} else if(isLookingLeft()){
 					kick(100, 90);
@@ -151,7 +151,7 @@ public class Goalie extends Agent {
 			runToBall();
 		}
 	}
-	
+
 	private boolean canCatch() {
 		return cyclesSinceCatch >= 5 ? true : false;
 	}
