@@ -314,6 +314,7 @@ public abstract class Agent implements TimeListener {
 	}
 	
 	public void pass(String target) {
+		System.out.println("pass!");
 		double distance = world.getDistanceToObject(target);
 		double distChange = world.getObjectDistChange(target);
 		int faceDir = world.getObjectFacingDir(target);
@@ -324,7 +325,7 @@ public abstract class Agent implements TimeListener {
 				kick(getPassingPower(world.getDistanceToObject(target)), angle);
 			} else {
 				int angle = world.getAngleToObject(target);
-				angle += faceDir/2 + distance/2;
+				angle += faceDir/4 + distance/2;
 				kick(getPassingPower(world.getDistanceToObject(target)), angle);
 			}
 			/*if(distChange > 0) { // Target rör sig bortåt

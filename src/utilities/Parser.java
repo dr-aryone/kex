@@ -169,7 +169,6 @@ public class Parser extends Thread {
 	}
 
 	private void parseSee(String message) {
-		System.out.println(message);
 		ParseContext<Integer> timeContext = parseTime(message);
 		message = timeContext.message;
 		int time = timeContext.parsedData;
