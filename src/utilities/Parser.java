@@ -184,6 +184,12 @@ public class Parser extends Thread {
 			message = itemContext.message;
 			String item = itemContext.parsedData.toLowerCase();
 
+			if (!world.knowsEnemyName() && item.startsWith("p")
+					&& item.length() > 1
+					&& !item.contains(Constants.Team.NAME.toLowerCase())) {
+				world.setEnemyName(item.split("\"")[1]);
+			}
+
 			world.sawObjectAtTime(item, time);
 			int rightPara = message.indexOf(')');
 			String[] params = message.substring(0, rightPara).split(" ");

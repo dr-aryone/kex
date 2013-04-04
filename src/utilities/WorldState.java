@@ -15,6 +15,7 @@ public class WorldState {
 	public static final int ENEMY_CORNER_KICK = 10;
 	public static final int FRIENDLY_GOAL_KICK = 11;
 	public static final int ENEMY_GOAL_KICK = 12;
+	private String enemyName = "";
 	private boolean isLeftSide;
 	private HashMap<String, Integer> lastSeen = new HashMap<String, Integer>();
 	private HashMap<String, Integer> angleToObjects = new HashMap<String, Integer>();
@@ -23,6 +24,10 @@ public class WorldState {
 	private boolean newData;
 	private int state;
 	private int currentTime;
+	
+	public boolean knowsEnemyName() {
+		return !enemyName.equals("");
+	}
 
 	public int getCurrentTime() {
 		return currentTime;
@@ -183,6 +188,14 @@ public class WorldState {
 
 	public String getSideChar() {
 		return isRightSide() ? "r" : "l";
+	}
+
+	public String getEnemyName() {
+		return enemyName;
+	}
+
+	public void setEnemyName(String enemyName) {
+		this.enemyName = enemyName;
 	}
 
 }

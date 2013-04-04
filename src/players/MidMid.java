@@ -62,7 +62,7 @@ public class MidMid extends Agent {
 				String passTarget = getPassTarget();
 				if (world.getDistToEnemyGoal() < Constants.Params.SCORING_DISTANCE) {
 					tryToScore();
-				} else if (passTarget != null) {
+				} else if (passTarget != null && isPassSafe(passTarget)) {
 					pass(passTarget);
 				} else {
 					dribble();

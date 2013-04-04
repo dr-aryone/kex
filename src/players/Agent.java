@@ -161,23 +161,23 @@ public abstract class Agent implements TimeListener {
 
 	private void updateAngles(int direction) {
 		try {
-		String key;
-		Integer previousAngle, newAngle;
-		HashMap<String, Integer> angleToObjects = world.getAngleToObjects();
-		Set<String> keys = angleToObjects.keySet();
-		for (Iterator<String> i = keys.iterator(); i.hasNext();) {
-			key = i.next();
-			previousAngle = angleToObjects.get(key);
-			newAngle = previousAngle - direction;
-			if (newAngle > 180) {
-				newAngle = -1 * (360 - newAngle);
-			} else if (newAngle < -180) {
-				newAngle = 360 + newAngle;
+			String key;
+			Integer previousAngle, newAngle;
+			HashMap<String, Integer> angleToObjects = world.getAngleToObjects();
+			Set<String> keys = angleToObjects.keySet();
+			for (Iterator<String> i = keys.iterator(); i.hasNext();) {
+				key = i.next();
+				previousAngle = angleToObjects.get(key);
+				newAngle = previousAngle - direction;
+				if (newAngle > 180) {
+					newAngle = -1 * (360 - newAngle);
+				} else if (newAngle < -180) {
+					newAngle = 360 + newAngle;
+				}
+				angleToObjects.put(key, newAngle);
 			}
-			angleToObjects.put(key, newAngle);
-		}
 		} catch (ConcurrentModificationException e) {
-			//lol fuck it
+			// lol fuck it
 		}
 	}
 
@@ -186,10 +186,10 @@ public abstract class Agent implements TimeListener {
 	}
 
 	public void runToBall() {
-		if (Math.abs(world.getAngleToBall()) > 40) {
+		if (Math.abs(world.getAngleToBall()) > 25) {
 			turn(world.getAngleToBall());
 		} else {
-			dash(100, world.getAngleToBall());
+			dash(100, 0);
 		}
 	}
 
@@ -250,6 +250,30 @@ public abstract class Agent implements TimeListener {
 		return target;
 	}
 
+	public boolean isPassSafe(String target) {
+		return isAngleSafe(world.getAngleToObject(target),world.getDistanceToObject(target));
+	}
+	
+	public boolean isAngleSafe(int angle, double distance) {
+		if (!world.knowsEnemyName())
+			return true;
+		String curr = "p \"" + world.getEnemyName() + "\"";
+
+		for (int i = 1; i <= 12; i++) {
+			int currAngle = world.getAngleToObject(curr);
+			if (currAngle == Constants.Params.NOT_DEFINED) {
+				curr = "p \"" + Constants.Team.NAME + "\" " + i;
+				continue;
+			}
+			double currDistance = world.getDistanceToObject(curr);
+			if (Math.abs(angle - currAngle) <= Constants.Params.SAFE_PASSING_ANGLE
+					&& currDistance <= distance) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public void runToSlot(String target, int targetDist) {
 		if (notLookedAroundSince > 15) {
 			turn(180);
@@ -275,8 +299,18 @@ public abstract class Agent implements TimeListener {
 	}
 
 	private int getPassingPower(double distance) {
-		int power = (int) (10 + distance * 4);
-		return Math.min(power, 100);
+		int power = 0;
+		if (distance < 10)
+			power = 20 + (int) distance;
+		else if (distance < 20)
+			power = 30 + (int) distance;
+		else if (distance < 30)
+			power = 40 + (int) distance;
+		else if (distance < 43)
+			power = 50 + (int) distance;
+		else 
+			power = 100;
+		return power;
 	}
 
 	public void pass(String target) {
