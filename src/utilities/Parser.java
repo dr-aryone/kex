@@ -169,6 +169,7 @@ public class Parser extends Thread {
 	}
 
 	private void parseSee(String message) {
+		System.out.println(message);
 		ParseContext<Integer> timeContext = parseTime(message);
 		message = timeContext.message;
 		int time = timeContext.parsedData;
@@ -198,6 +199,11 @@ public class Parser extends Thread {
 			}
 			if (params.length > 1) {
 				world.angleToObject(item, Integer.parseInt(params[1]));
+			}
+			if (params.length > 5 && !params[5].equals("t") && !params[5].equals("k")) {
+				
+				world.objectDistChange(item, Double.parseDouble(params[2]));
+				world.bodyFacingDir(item, Integer.parseInt(params[4]));
 			}
 
 		}

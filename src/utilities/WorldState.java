@@ -20,6 +20,8 @@ public class WorldState {
 	private HashMap<String, Integer> angleToObjects = new HashMap<String, Integer>();
 	private HashMap<String, Double> distanceToObjects = new HashMap<String, Double>();
 	private HashMap<String, String> serverParams = new HashMap<String, String>();
+	private HashMap<String, Double> distChangeOfObjects = new HashMap<String, Double>();
+	private HashMap<String, Integer> bodyFacingDirOfObjects = new HashMap<String, Integer>();
 	private boolean newData;
 	private int state;
 	private int currentTime;
@@ -93,6 +95,14 @@ public class WorldState {
 
 	public void distanceToObject(String object, double distance) {
 		distanceToObjects.put(object, distance);
+	}
+	
+	public void objectDistChange(String object, double distance) {
+		distChangeOfObjects.put(object, distance);
+	}
+	
+	public void bodyFacingDir(String object, int distance) {
+		bodyFacingDirOfObjects.put(object, distance);
 	}
 
 	public double getDistToFriendlyGoal() {
@@ -183,6 +193,40 @@ public class WorldState {
 
 	public String getSideChar() {
 		return isRightSide() ? "r" : "l";
+	}
+	
+	public double getObjectDistChange(String key) {
+		Double speed = distChangeOfObjects.get(key);
+		if (speed == null) {
+			return Constants.Params.NOT_DEFINED;
+		}
+
+		Integer time = lastSeen.get(key);
+		if (time == null) {
+			return Constants.Params.NOT_DEFINED;
+		}
+		int timeSinceLastSeen = getCurrentTime() - time;
+		if (!isPositionValid(timeSinceLastSeen, key, isRightSide())) {
+			return Constants.Params.NOT_DEFINED;
+		}
+		return speed;
+	}
+	
+	public int getObjectFacingDir(String key) {
+		Integer dir = bodyFacingDirOfObjects.get(key);
+		if (dir == null) {
+			return Constants.Params.NOT_DEFINED;
+		}
+
+		Integer time = lastSeen.get(key);
+		if (time == null) {
+			return Constants.Params.NOT_DEFINED;
+		}
+		int timeSinceLastSeen = getCurrentTime() - time;
+		if (!isPositionValid(timeSinceLastSeen, key, isRightSide())) {
+			return Constants.Params.NOT_DEFINED;
+		}
+		return dir;
 	}
 
 }

@@ -278,10 +278,34 @@ public abstract class Agent implements TimeListener {
 		int power = (int) (10 + distance * 4);
 		return Math.min(power, 100);
 	}
-
+	
 	public void pass(String target) {
-		kick(getPassingPower(world.getDistanceToObject(target)),
-				world.getAngleToObject(target));
+		double distance = world.getDistanceToObject(target);
+		double distChange = world.getObjectDistChange(target);
+		int faceDir = world.getObjectFacingDir(target);
+		if(distChange != 0 && Math.abs(faceDir) > 10) {
+			if(faceDir > 0) {
+				int angle = world.getAngleToObject(target);
+				angle += faceDir/2 - distance/2;
+				kick(getPassingPower(world.getDistanceToObject(target)), angle);
+			} else {
+				int angle = world.getAngleToObject(target);
+				angle += faceDir/2 + distance/2;
+				kick(getPassingPower(world.getDistanceToObject(target)), angle);
+			}
+			/*if(distChange > 0) { // Target rör sig bortåt
+				int angle = world.getAngleToObject(target);
+				angle += faceDir/2 - distance/2;
+				kick(getPassingPower(world.getDistanceToObject(target)), angle);
+			} else { // Target närmar sig
+				int angle = world.getAngleToObject(target);
+				angle += faceDir/2;
+				kick(getPassingPower(world.getDistanceToObject(target)), angle);
+			}*/
+		} else {
+			kick(getPassingPower(world.getDistanceToObject(target)), world.getAngleToObject(target));
+		}
+		
 	}
 
 	public void tackle(int angle) {
