@@ -132,7 +132,7 @@ public class Goalie extends Agent {
 	private void passOrKickAway() {
 		if(world.getDistToBall() < Double.parseDouble(world.getServerParam("kickable_margin"))) {
 			String target = getPassTarget();
-			if(target != null) {
+			if (target != null && isPassSafe(target)) {
 				pass(target);
 			} else {
 				if(canSeeEnemyGoal() && world.getAngleToEnemyGoal() != Constants.Params.NOT_DEFINED) {
