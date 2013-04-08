@@ -235,13 +235,10 @@ public abstract class Agent implements TimeListener {
 					continue;
 				}
 				double distance = world.getDistanceToObject(currTarget);
-				if (Math.abs(angle) < Constants.Params.FORWARD_PASSING_ANGLE
-						|| Math.abs(angle - enemyGoalAngle) < Constants.Params.FORWARD_PASSING_ANGLE) {
 					if (distance > Constants.Params.FORWARD_PASSING_DISTANCE) {
 						if (target == null
 								|| world.getDistanceToObject(target) < distance) {
 							target = currTarget;
-						}
 					}
 				}
 				currTarget = "p \"" + Constants.Team.NAME + "\" " + i;
@@ -276,13 +273,13 @@ public abstract class Agent implements TimeListener {
 
 	public void runToSlot(String target, int targetDist) {
 		if (notLookedAroundSince > 15) {
-			turn(180);
+			//turn(180);
 			notLookedAroundSince = 0;
-			return;
+			//return;
 		}
 		notLookedAroundSince++;
 		if (world.getAngleToObject(target) != Constants.Params.NOT_DEFINED) {
-			if (Math.abs(world.getAngleToObject(target)) > 40
+			if (Math.abs(world.getAngleToObject(target)) > 20
 					&& world.getDistanceToObject(target) > targetDist) {
 				turn(world.getAngleToObject(target));
 			} else {
@@ -290,7 +287,7 @@ public abstract class Agent implements TimeListener {
 					turn(Constants.Params.TURNING_LOOKING_ANGLE);
 				} else {
 					dash(Constants.Params.JOGGING_SPEED,
-							world.getAngleToObject(target));
+							0);
 				}
 			}
 		} else {
@@ -314,31 +311,20 @@ public abstract class Agent implements TimeListener {
 	}
 	
 	public void pass(String target) {
-		System.out.println("pass!");
 		double distance = world.getDistanceToObject(target);
 		double distChange = world.getObjectDistChange(target);
 		int faceDir = world.getObjectFacingDir(target);
-		if(distChange != 0 && Math.abs(faceDir) > 10) {
+		int angle = world.getAngleToObject(target);
+		if(distChange != 0 && Math.abs(faceDir) > 10 && faceDir != Constants.Params.NOT_DEFINED && distChange != Constants.Params.NOT_DEFINED) {
 			if(faceDir > 0) {
-				int angle = world.getAngleToObject(target);
-				angle += faceDir/2 - distance/2;
+				angle += faceDir/3 - distance/2;
 				kick(getPassingPower(world.getDistanceToObject(target)), angle);
 			} else {
-				int angle = world.getAngleToObject(target);
-				angle += faceDir/4 + distance/2;
+				angle += faceDir/3 + distance/2;
 				kick(getPassingPower(world.getDistanceToObject(target)), angle);
 			}
-			/*if(distChange > 0) { // Target rör sig bortåt
-				int angle = world.getAngleToObject(target);
-				angle += faceDir/2 - distance/2;
-				kick(getPassingPower(world.getDistanceToObject(target)), angle);
-			} else { // Target närmar sig
-				int angle = world.getAngleToObject(target);
-				angle += faceDir/2;
-				kick(getPassingPower(world.getDistanceToObject(target)), angle);
-			}*/
 		} else {
-			kick(getPassingPower(world.getDistanceToObject(target)), world.getAngleToObject(target));
+			kick(getPassingPower(distance), angle);
 		}
 		
 	}
