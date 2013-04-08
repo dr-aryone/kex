@@ -60,6 +60,7 @@ public class InnerRightDefender extends Agent {
 				&& world.getDistanceToObject("f c t") > 17
 				&& world.getDistanceToObject("f c") > 17
 				&& world.getDistanceToObject("f c b") > 17) {
+			String tackleTarget = getTackleTarget();
 			if (world.getDistToBall() < Double.parseDouble(world
 					.getServerParam("kickable_margin"))) {
 				String passTarget = getPassTarget();
@@ -70,11 +71,8 @@ public class InnerRightDefender extends Agent {
 				} else {
 					dribble();
 				}
-			} else if (world.getDistanceToObject("p") < Integer.parseInt(world
-					.getServerParam("tackle_dist"))
-					&& world.getDistanceToObject(getClosestFriend()) > Integer
-							.parseInt(world.getServerParam("tackle_dist"))) {
-				tackle(world.getAngleToObject("p"));
+			} else if (tackleTarget != null) {
+				tackle(world.getAngleToObject(tackleTarget));
 			} else {
 				runToBall();
 			}

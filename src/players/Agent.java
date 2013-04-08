@@ -220,6 +220,25 @@ public abstract class Agent implements TimeListener {
 		return target;
 	}
 
+	public String getTackleTarget() {
+		if (!world.knowsEnemyName())
+			return null;
+		String curr = "p \"" + world.getEnemyName() + "\"";
+
+		for (int i = 1; i <= 12; i++) {
+			int currAngle = world.getAngleToObject(curr);
+			if (currAngle == Constants.Params.NOT_DEFINED) {
+				curr = "p \"" + Constants.Team.NAME + "\" " + i;
+				continue;
+			}
+			if (world.getDistanceToObject(curr) < Integer.parseInt(world
+					.getServerParam("tackle_dist"))) {
+				return curr;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * @return target name if there is any, null otherwise
 	 */
@@ -248,9 +267,10 @@ public abstract class Agent implements TimeListener {
 	}
 
 	public boolean isPassSafe(String target) {
-		return isAngleSafe(world.getAngleToObject(target),world.getDistanceToObject(target));
+		return isAngleSafe(world.getAngleToObject(target),
+				world.getDistanceToObject(target));
 	}
-	
+
 	public boolean isAngleSafe(int angle, double distance) {
 		if (!world.knowsEnemyName())
 			return true;
@@ -305,7 +325,7 @@ public abstract class Agent implements TimeListener {
 			power = 40 + (int) distance;
 		else if (distance < 43)
 			power = 50 + (int) distance;
-		else 
+		else
 			power = 100;
 		return power;
 	}
